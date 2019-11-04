@@ -1,0 +1,28 @@
+{% extends 'stock/base.html' %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+<article>
+  <section class="col-md-10 mx-auto">
+    <h1>{{title}}</h1>
+
+
+
+      <div>
+        <p class="text-right small">Updated: {{shikiho.updated_date}}</p>
+      </div>
+      <div class="clearfix my-5">
+          <div class="float-left">
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </div>
+        <div class="float-right">
+          <a href="/{{shikiho.stock_code}}/{{shikiho.pub_year}}/{{shikiho.pub_no}}/edit/" class="btn btn-primary">Edit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+{% endblock %}

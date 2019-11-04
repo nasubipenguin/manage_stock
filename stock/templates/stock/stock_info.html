@@ -1,0 +1,71 @@
+{% extends 'stock/base.html' %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+<article>
+  <section class="col-md-10 mx-auto">
+    <h1>{{title}}</h1>
+
+    <div class="mt-4">
+      <div class="form-group row">
+        <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.stock_code}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="stock_name" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄名</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.stock_name}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="accounting_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">決算月</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.accounting_month}}月
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="business_type" class="col-form-label justify-content-start col-sm-3 col-lg-2">業種</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.business_type}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ir_url" class="col-form-label justify-content-start col-sm-3 col-lg-2">IR情報URL</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.ir_url}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="notes" class="col-form-label justify-content-start col-sm-3 col-lg-2">備考</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.notes}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="watch_flag" class="col-form-label justify-content-start col-sm-3 col-lg-2">Watching</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock.watch_flag|yesno:"○,ー,ー" }}
+        </div>
+      </div>
+      <div>
+        <p class="text-right small">Updated: {{stock.updated_date}}</p>
+      </div>
+      <div class="text-center my-5">
+        <div class="">
+          <a href="/{{stock.stock_code}}/edit/" class="btn btn-primary">Edit</a>
+        </div>
+      </div>
+      <div class="text-right my-5">
+        <div class="">
+          <button type="submit" class="btn btn-outline-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+{% endblock %}

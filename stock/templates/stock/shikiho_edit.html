@@ -1,0 +1,105 @@
+{% extends 'stock/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+<article>
+  <section class="col-md-10 mx-auto">
+    <h1>{{title}}</h1>
+
+    <div class="mt-4">
+      <form method="post">{% csrf_token %}
+        <div class="form-group row">
+          <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ stock_code }}
+            <input type="hidden" name="stock_code" value="{{ stock_code }}" />
+          </div>
+        </div>
+        <h2>Fundamentals</h2>
+        <div class="form-group row">
+          <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.pub_year|add_class:"w-25" }}<span class="ml-2">年</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="pub_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行月</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.pub_month|add_class:"w-25" }}<span class="ml-2">月</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="market_capitalization" class="col-form-label justify-content-start col-sm-3 col-lg-2">時価総額</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.market_capitalization }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="capital_ratio" class="col-form-label justify-content-start col-sm-3 col-lg-2">自己資本比率</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.capital_ratio }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="roe" class="col-form-label justify-content-start col-sm-3 col-lg-2">ROE</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.roe }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="roa" class="col-form-label justify-content-start col-sm-3 col-lg-2">ROA</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.roa }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="operating_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.operating_cf|add_class:"w-25" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="investing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">投資CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.investing_cf|add_class:"w-25" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="financing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">財務CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.financing_cf|add_class:"w-25" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="headline_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">見出し1</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.headline_1 }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="headline_2" class="col-form-label justify-content-start col-sm-3 col-lg-2">見出し2</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.headline_2 }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="notes" class="col-form-label justify-content-start col-sm-3 col-lg-2">備考</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.notes }}
+          </div>
+        </div>
+
+        <div class="clearfix my-5">
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">{{ is_edit|yesno:"Update,Register," }}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</article>
+{% endblock %}
