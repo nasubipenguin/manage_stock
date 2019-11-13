@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Stock, Performance, Shikiho
 
 def stock_list(request):
     return render(request, 'blog/stock_list.html', {})
