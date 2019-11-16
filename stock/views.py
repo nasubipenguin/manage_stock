@@ -6,7 +6,7 @@ from .forms import StockForm
 
 def stock_list(request):
     stocks = Stock.objects.filter(updated_date__lte=timezone.now()).order_by('stock_code')
-    return render(request, 'stock/stock_list.html', {'stocks': stocks})
+    return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'stocks': stocks})
 
 def stock_new(request):
     if request.method == "POST":
@@ -16,13 +16,15 @@ def stock_new(request):
             stock.updated_date = timezone.now()
             stock.save()
             return redirect('stock_info', stock_code=stock.stock_code)
+        else:
+            return render(request, 'stock/stock_edit.html', {'title': 'Register Stock Info', 'form': form})
     else:
         form = StockForm()
-    return render(request, 'stock/stock_edit.html', {'form': form, 'is_edit': False})
+    return render(request, 'stock/stock_edit.html', {'title': 'Register Stock Info', 'form': form, 'is_edit': False})
 
 def stock_info(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
-    return render(request, 'stock/stock_info.html', {'stock': stock})
+    return render(request, 'stock/stock_info.html', {'title': 'Stock Info', 'stock': stock})
 
 def stock_edit(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
@@ -35,7 +37,7 @@ def stock_edit(request, stock_code):
             return redirect('stock_info', stock_code=stock.stock_code)
     else:
         form = StockForm(instance=stock)
-    return render(request, 'stock/stock_edit.html', {'stock_code': stock_code, 'form': form, 'is_edit': True})
+    return render(request, 'stock/stock_edit.html', {'title': 'Update Stock Info', 'stock_code': stock_code, 'form': form, 'is_edit': True})
 
 def stock_delete(request, stock_code):
     try:
@@ -65,4 +67,4 @@ def shikiho_edit(request, stock_code):
 
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
-    return render(request, 'stock/stock_detail.html', {'stock': stock})
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock': stock})

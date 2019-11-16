@@ -57,14 +57,14 @@
             <!--<th scope="col">損切価格</th>-->
             <!--<th scope="col">利益確定<br>価格</th>-->
             <th scope="col">Watching</th>
+            <th scope="col">Detail</th>
           </tr>
         </thead>
         <tbody>
       {% for stock in stocks %}
           <tr>
-
-            <td class="text-right"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">{{stock.stock_code}}</a></td>
-            <td>{{stock.stock_name}} <span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></td>
+            <td><a href="{% url 'stock_info' stock_code=stock.stock_code %}">{{stock.stock_code}}</a></td>
+            <td>{{stock.stock_name}}</td>
             <td>{{stock.notes}}</td>
             <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">日経</a></td>
             <!--<td></td>-->
@@ -72,6 +72,7 @@
             <!--<td></td>-->
             <!--<td></td>-->
             <td class="text-center">{{stock.watch_flag|yesno:"○,ー,ー"}}</td>
+            <td class="text-center"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">more</a></td>
           </tr>
       {% endfor %}
         </tbody>

@@ -9,6 +9,12 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
+    {% if is_edit is None %}
+    <div class="alert alert-danger" role="alert">
+      Stock code {{ form.stock_code.value }} already exists.<br>
+      Confirm the inputted code or <a href="{% url 'stock_info' stock_code=form.stock_code.value %}">update it from here</a>.
+    </div>
+    {% endif %}
 
     <div class="mt-4">
       <form method="post">{% csrf_token %}

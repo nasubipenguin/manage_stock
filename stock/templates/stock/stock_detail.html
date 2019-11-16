@@ -3,7 +3,8 @@
 {% block content %}
 <article>
   <section>
-    <h1>{{title}} <span class="badge badge-info ml-3 align-top">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></h1>
+    <span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span>
+    <h1>{{title}}</h1>
 
     <p class="text-right small"><a href="/{{stock.stock_code}}/">Update Stock Info</a></p>
     <div class="clearfix">
