@@ -6,4 +6,4 @@ class StockForm(forms.ModelForm):
 
     class Meta:
         model = Stock
-        fields = ('stock_code','stock_name','accounting_month','business_type','ir_url','watch_flag','notes',)
+        fields = ('stock_code','stock_name','accounting_month','business_type','ir_url','watch_flag','notes', 'updated_date')

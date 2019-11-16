@@ -5,7 +5,7 @@
   <section>
     <h1>{{title}} <span class="badge badge-info ml-3 align-top">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></h1>
 
-    <p class="text-right small"><a href="/{{stock.stock_code}}/edit/">Update Stock Info</a></p>
+    <p class="text-right small"><a href="/{{stock.stock_code}}/">Update Stock Info</a></p>
     <div class="clearfix">
       <div class="float-md-left">
         <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
@@ -17,12 +17,15 @@
           <tr>
             <th>リンク</th>
             <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">日経</a></td>
-            <td><a href="{{stock.ir_url}}" target="_blank">IR</a></td>
+            {% if not stock.ir_url is None %}
+            <td><a href="{{stock.ir_url|default:''}}" target="_blank">IR</a></td>
+            {% endif %}
           </tr>
           <tr>
             <th>業績登録</th>
-            <td><a href="/{{stock.stock_code}}/shikiho/new/">四季報</a></td>
-            <td><a href="/{{stock.stock_code}}/result/new/">決算短信</a></td>
+            <td><a href="{% url 'performance_new' stock_code=stock.stock_code %}">業績登録</a></td>
+            <td><a href="">四季報</a></td>
+            <td><a href="">決算短信</a></td>
           </tr>
         </table>
       </div>
