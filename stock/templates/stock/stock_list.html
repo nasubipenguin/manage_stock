@@ -11,8 +11,7 @@
           <thead class="small text-center">
             <tr>
               <th scope="col">Watching</th>
-              <th scope="col">ステータス</th>
-              <th scope="col">コード</th>
+              <th scope="col">銘柄コード</th>
               <th scope="col">銘柄名</th>
             </tr>
           </thead>
@@ -23,15 +22,6 @@
                   <option value=""></option>
                   <option value="1" {% if request.GET.watch_flag == "1" %}selected{% endif %}>○</option>
                   <option value="0" {% if request.GET.watch_flag == "0" %}selected{% endif %}>ー</option>
-                </select>
-              </td>
-              <td>
-                <select name="trade_status" id="trade_status" class="form-control">
-                  <option value=""></option>
-                  <option value="1">検討中</option>
-                  <option value="2">保留</option>
-                  <option value="3">損切り済</option>
-                  <option value="4">利益確定済</option>
                 </select>
               </td>
               <td><input type="text" name="stock_code" id="stock_code" value="{{request.GET.stock_code}}" class="form-control"></td>
@@ -48,14 +38,10 @@
       <table class="table table-striped">
         <thead class="small text-center">
           <tr>
-            <th scope="col">コード</th>
+            <th scope="col">銘柄コード</th>
             <th scope="col">銘柄名</th>
             <th scope="col">備考</th>
             <th scope="col">株価</th>
-            <!--<th scope="col">前日終値<br>比較</th>-->
-            <!--<th scope="col">購入金額</th>-->
-            <!--<th scope="col">損切価格</th>-->
-            <!--<th scope="col">利益確定<br>価格</th>-->
             <th scope="col">Watching</th>
             <th scope="col">Detail</th>
           </tr>
@@ -67,10 +53,6 @@
             <td>{{stock.stock_name}}</td>
             <td>{{stock.notes}}</td>
             <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">日経</a></td>
-            <!--<td></td>-->
-            <!--<td></td>-->
-            <!--<td></td>-->
-            <!--<td></td>-->
             <td class="text-center">{{stock.watch_flag|yesno:"○,ー,ー"}}</td>
             <td class="text-center"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">more</a></td>
           </tr>
