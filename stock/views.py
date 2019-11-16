@@ -4,8 +4,16 @@ from django.utils import timezone
 from .models import Stock
 from .forms import StockForm
 
+
 def stock_list(request):
-    stocks = Stock.objects.filter(updated_date__lte=timezone.now()).order_by('stock_code')
+    stocks = Stock.objects.filter(updated_date__lte=timezone.now())
+    if request.GET.get('watch_flag'):
+        stocks = stocks.filter(watch_flag__exact=request.GET.get('watch_flag'))
+    if request.GET.get('stock_code'):
+        stocks = stocks.filter(stock_code__exact=request.GET.get('stock_code'))
+    if request.GET.get('stock_name'):
+        stocks = stocks.filter(stock_name__contains=request.GET.get('stock_name'))
+    stocks = stocks.order_by('stock_code')
     return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'stocks': stocks})
 
 def stock_new(request):
