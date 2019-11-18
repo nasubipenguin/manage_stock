@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:stock_code>/shikiho/new/', views.shikiho_new, name='shikiho_new'),
     path('<int:stock_code>/shikiho/<int:pub_year>/<int:pub_month>/', views.shikiho_info, name='shikiho_info'),
     path('<int:stock_code>/shikiho/<int:pub_year>/<int:pub_month>/edit/', views.shikiho_edit, name='shikiho_edit'),
+    path('<int:stock_code>/shikiho/<int:pub_year>/<int:pub_month>/delete/', views.shikiho_delete, name='shikiho_delete'),
 ]

@@ -25,7 +25,7 @@
           <tr>
             <th>業績登録</th>
             <td><a href="{% url 'performance_new' stock_code=stock.stock_code %}">業績登録</a></td>
-            <td><a href="">四季報</a></td>
+            <td><a href="{% url 'shikiho_new' stock_code=stock.stock_code %}">四季報</a></td>
             <td><a href="">決算短信</a></td>
           </tr>
         </table>

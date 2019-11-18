@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
-from .models import Stock
-from .forms import StockForm
+from django.http import Http404
+from .models import Stock, Shikiho
+from .forms import StockForm, ShikihoForm
 
 
+# Stock
 def stock_list(request):
     stocks = Stock.objects.filter(updated_date__lte=timezone.now())
     if request.GET.get('watch_flag'):
@@ -55,24 +57,67 @@ def stock_delete(request, stock_code):
     stock.delete()
     return redirect('stock_list')
 
-def performance_new(request):
+# Performance
+def performance_new(request, stock_code):
     return render(request, 'stock/performance_edit.html', {})
 
-def performance_info(request, stock_code):
+def performance_info(request, stock_code, pub_year, pub_month, target_period):
     return render(request, 'stock/performance_info.html', {})
 
-def performance_edit(request, stock_code):
+def performance_edit(request, stock_code, pub_year, pub_month, target_period):
     return render(request, 'stock/performance_edit.html', {})
 
-def shikiho_new(request):
-    return render(request, 'stock/shikiho_edit.html', {})
+def performance_delete(request, stock_code, pub_year, pub_month):
+    return redirect('performance_info', stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
 
-def shikiho_info(request, stock_code):
-    return render(request, 'stock/shikiho_info.html', {})
+# Shikiho
+def shikiho_new(request, stock_code):
+    if request.method == "POST":
+        form = ShikihoForm(request.POST)
+        if form.is_valid():
+            shikiho = form.save(commit=False)
+            shikiho.updated_date = timezone.now()
+            stock = Stock.objects.get(stock_code=stock_code)
+            shikiho.stock_code = stock
+            shikiho.save()
+            return redirect('shikiho_info', stock_code=stock_code, pub_year=shikiho.pub_year, pub_month=shikiho.pub_month)
+        else:
+            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'form': form})
+    else:
+        form = ShikihoForm()
+    return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'form': form, 'is_edit': False})
 
-def shikiho_edit(request, stock_code):
-    return render(request, 'stock/shikiho_edit.html', {})
+def shikiho_info(request, stock_code, pub_year, pub_month):
+    shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
+    return render(request, 'stock/shikiho_info.html', {'title': 'Shikiho Info', 'stock_code': stock_code, 'shikiho': shikiho})
 
+def shikiho_edit(request, stock_code, pub_year, pub_month):
+    shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
+    if request.method == "POST":
+        form = ShikihoForm(request.POST, instance=shikiho)
+        if form.is_valid():
+            shikiho = form.save(commit=False)
+            shikiho.updated_date = timezone.now()
+            stock = Stock.objects.get(stock_code=stock_code)
+            shikiho.stock_code = stock
+            shikiho.save()
+            return redirect('shikiho_info', stock_code=stock_code, pub_year=shikiho.pub_year, pub_month=shikiho.pub_month)
+        else:
+            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form})
+    else:
+        form = ShikihoForm(instance=shikiho)
+    return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form, 'is_edit': True})
+
+def shikiho_delete(request, stock_code, pub_year, pub_month):
+    try:
+        #stock = Stock.objects.get(stock_code=stock_code)
+        shikiho = Shikiho.objects.get(stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
+    except Shikiho.DoesNotExist:
+        raise Http404
+    shikiho.delete()
+    return redirect('stock_detail', stock_code=stock_code)
+
+# Summary
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock': stock})

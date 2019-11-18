@@ -8,18 +8,96 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
-
-
-
       <div>
-        <p class="text-right small">Updated: {{shikiho.updated_date}}</p>
-      </div>
-      <div class="clearfix my-5">
-          <div class="float-left">
-            <button type="submit" class="btn btn-outline-danger">Delete</button>
+        <div class="form-group row">
+          <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock_code }}
+            <input type="hidden" name="stock_code" id="stock_code" value="{{ stock_code }}" />
           </div>
-        <div class="float-right">
-          <a href="/{{shikiho.stock_code}}/{{shikiho.pub_year}}/{{shikiho.pub_no}}/edit/" class="btn btn-primary">Edit</a>
+        </div>
+        <div class="form-group row">
+          <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.pub_year}}年
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="pub_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行月</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.pub_month}}月
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="market_capitalization" class="col-form-label justify-content-start col-sm-3 col-lg-2">時価総額</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.market_capitalization}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="capital_ratio" class="col-form-label justify-content-start col-sm-3 col-lg-2">自己資本比率</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.capital_ratio}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="roe" class="col-form-label justify-content-start col-sm-3 col-lg-2">ROE</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.roe}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="roa" class="col-form-label justify-content-start col-sm-3 col-lg-2">ROA</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.roa}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="operating_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.operating_cf|yesno:"+,-," }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="investing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">投資CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.investing_cf|yesno:"+,-," }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="financing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">財務CF</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.financing_cf|yesno:"+,-," }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="headline_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">見出し1</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.headline_1|default:'' }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="headline_2" class="col-form-label justify-content-start col-sm-3 col-lg-2">見出し2</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.headline_2|default:'' }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="notes" class="col-form-label justify-content-start col-sm-3 col-lg-2">備考</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ shikiho.notes}}
+          </div>
+        </div>
+        <p class="text-right small">Updated: {{ shikiho.updated_date }}</p>
+      </div>
+      <div class="text-center my-5">
+        <div class="">
+          <a href="{% url 'shikiho_edit' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month %}" class="btn btn-primary">Edit</a>
+        </div>
+      </div>
+      <div class="text-right my-5">
+        <div class="">
+          <a href="{% url 'shikiho_delete' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month %}" class="text-danger">Delete</a>
         </div>
       </div>
     </div>
