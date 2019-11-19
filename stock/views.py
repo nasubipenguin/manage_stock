@@ -21,6 +21,9 @@ def stock_list(request):
 def stock_new(request):
     if request.method == "POST":
         form = StockForm(request.POST)
+        stock_code = request.POST['stock_code']
+        if Stock.objects.filter(stock_code=stock_code).exists():
+            return render(request, 'stock/stock_edit.html', {'title': 'Register Stock Info', 'form': form, 'exists': True})
         if form.is_valid():
             stock = form.save(commit=False)
             stock.updated_date = timezone.now()
@@ -47,6 +50,7 @@ def stock_edit(request, stock_code):
             return redirect('stock_info', stock_code=stock.stock_code)
     else:
         form = StockForm(instance=stock)
+        form.fields['stock_code'].widget.attrs['disabled'] = 'disabled'
     return render(request, 'stock/stock_edit.html', {'title': 'Update Stock Info', 'stock_code': stock_code, 'form': form, 'is_edit': True})
 
 def stock_delete(request, stock_code):

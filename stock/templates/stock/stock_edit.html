@@ -9,7 +9,7 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
-    {% if is_edit is None %}
+    {% if exists is True %}
     <div class="alert alert-danger" role="alert">
       Stock code {{ form.stock_code.value }} already exists.<br>
       Confirm the inputted code or <a href="{% url 'stock_info' stock_code=form.stock_code.value %}">update it from here</a>.
@@ -22,6 +22,9 @@
           <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ form.stock_code|add_class:"w-25 form-control" }}
+            {% if is_edit == True %}
+            <input type="hidden" name="stock_code" id="stock_code" value="{{form.stock_code.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
@@ -65,8 +68,10 @@
           <div class="text-center">
             {% if is_edit == True %}
             <a href="{% url 'stock_info' stock_code=stock_code %}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary">Update</button>
+            {% else %}
+            <button type="submit" class="btn btn-primary">Register</button>
             {% endif %}
-            <button type="submit" class="btn btn-primary">{{ is_edit|yesno:"Update,Register," }}</button>
           </div>
         </div>
       </form>
