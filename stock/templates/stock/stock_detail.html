@@ -36,13 +36,39 @@
       <table class="table table-striped">
         <thead class="small text-center">
           <tr>
-            <th scope="col">発行年月</th>
+            <th scope="col" rowspan="2">発行年月</th>
+            <th scope="col">自己資本比率</th>
+            <th scope="col">ROE</th>
+            <th scope="col">ROA</th>
+            <th scope="col">営業CF</th>
+            <th scope="col">投資CF</th>
+            <th scope="col">財務CF</th>
+            <th scope="col">時価総額（億）</th>
+            <th scope="col">株主価値（億）</th>
+          </tr>
+          <tr>
+            <th scope="col" colspan="2">見出し1</th>
+            <th scope="col" colspan="2">見出し2</th>
+            <th scope="col" colspan="4">備考	</th>
           </tr>
         </thead>
         <tbody>
           {% for shikiho in shikihos %}
           <tr>
-            <td><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month  %}">{{ shikiho.pub_year }}/{{ shikiho.pub_month }}</a></td>
+            <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month  %}">{{ shikiho.pub_year }}/{{ shikiho.pub_month }}</a></td>
+            <td class="text-right">{{ shikiho.capital_ratio }}</td>
+            <td class="text-right">{{ shikiho.roe }}</td>
+            <td class="text-right">{{ shikiho.roa }}</td>
+            <td class="text-center">{{ shikiho.operating_cf|yesno:"+,-," }}</td>
+            <td class="text-center">{{ shikiho.investing_cf|yesno:"+,-," }}</td>
+            <td class="text-center">{{ shikiho.financing_cf|yesno:"+,-," }}</td>
+            <td class="text-right">{{ shikiho.market_capitalization }}</td>
+            <td class="text-right"></td>
+          </tr>
+          <tr>
+            <td colspan="2">{{ shikiho.headline_1|default:"" }}</td>
+            <td colspan="2">{{ shikiho.headline_2|default:"" }}</td>
+            <td colspan="4">{{ shikiho.notes }}</td>
           </tr>
           {% endfor %}
         </tbody>
