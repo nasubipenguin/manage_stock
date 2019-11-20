@@ -11,7 +11,8 @@
     <h1>{{title}}</h1>
     {% if exists is True %}
     <div class="alert alert-danger" role="alert">
-      Shikiho info of code {{ stock_code }} published {{ form.pub_year.value }}/{{ form.pub_month.value }} already exists.<br>
+      Shikiho info bellow already exists.<br>
+      code:{{ stock_code }} published:{{ form.pub_year.value }}/{{ form.pub_month.value }}<br>
       Confirm the inputted year/month or <a href="{% url 'shikiho_info' stock_code=stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}">update it from here</a>.
     </div>
     {% endif %}
@@ -70,31 +71,19 @@
         <div class="form-group row">
           <label for="operating_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業CF</label>
           <div class="col-sm-9 col-lg-10">
-            <select name="operating_cf" id="operating_cf" class="w-25 form-control">
-              <option value=""></option>
-              <option value="True" {% if form.operating_cf.value == True %}selected{% endif %}>+</option>
-              <option value="False" {% if form.operating_cf.value == False %}selected{% endif %}>-</option>
-            </select>
+            {{ form.operating_cf|add_class:"w-25 form-control" }}
           </div>
         </div>
         <div class="form-group row">
           <label for="investing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">投資CF</label>
           <div class="col-sm-9 col-lg-10">
-            <select name="investing_cf" id="investing_cf" class="w-25 form-control">
-              <option value=""></option>
-              <option value="True" {% if form.investing_cf.value == True %}selected{% endif %}>+</option>
-              <option value="False" {% if form.investing_cf.value == False %}selected{% endif %}>-</option>
-            </select>
+            {{ form.investing_cf|add_class:"w-25 form-control" }}
           </div>
         </div>
         <div class="form-group row">
           <label for="financing_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">財務CF</label>
           <div class="col-sm-9 col-lg-10">
-            <select name="financing_cf" id="financing_cf" class="w-25 form-control">
-              <option value=""></option>
-              <option value="True" {% if form.financing_cf.value == True %}selected{% endif %}>+</option>
-              <option value="False" {% if form.financing_cf.value == False %}selected{% endif %}>-</option>
-            </select>
+            {{ form.financing_cf|add_class:"w-25 form-control" }}
           </div>
         </div>
         <div class="form-group row">

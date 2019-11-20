@@ -9,73 +9,101 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
+    {% if exists is True %}
+    <div class="alert alert-danger" role="alert">
+      Performance info of bellow already exists.<br>
+      code:{{ stock_code }} source:{{ form.source.value|yesno:"四季報,会社発表," }} published:{{ form.pub_year.value }}/{{ form.pub_month.value }} target_period:{{ form.target_period.value }}<br>
+      Confirm the inputted year/month/target_period or <a href="{% url 'performance_info' stock_code=stock_code source=form.source.value pub_year=form.pub_year.value pub_month=form.pub_month.value target_period=form.target_period.value %}">update it from here</a>.
+    </div>
+    {% endif %}
 
     <div class="mt-4">
       <form method="post">{% csrf_token %}
         <div class="form-group row">
-          <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+          <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ stock_code }}
-            <input type="hidden" name="stock_code" value="{{ stock_code }}" />
+            <input type="hidden" name="stock_code" id="stock_code" value="{{ stock_code }}" />
           </div>
         </div>
         <div class="form-group row">
-          <label for="operating_cf" class="col-form-label justify-content-start col-sm-3 col-lg-2">情報ソース</label>
+          <label for="source" class="col-form-label justify-content-start col-sm-3 col-lg-2">情報ソース</label>
           <div class="col-sm-9 col-lg-10">
-            {{ form.source|add_class:"w-25" }}
+            {{ form.source|add_class:"w-25 form-control" }}
+            {% if is_edit == True %}
+            <input type="hidden" name="source" id="source" value="{{form.source.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
           <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.pub_year|add_class:"w-25" }}<span class="ml-2">年</span>
+            {{ form.pub_year|add_class:"w-25 form-control" }}<span class="ml-2">年</span>
+            {% if is_edit == True %}
+            <input type="hidden" name="pub_year" id="pub_year" value="{{form.pub_year.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
           <label for="pub_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行月</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.pub_month|add_class:"w-25" }}<span class="ml-2">月</span>
+            {{ form.pub_month|add_class:"w-25 form-control" }}<span class="ml-2">月</span>
+            {% if is_edit == True %}
+            <input type="hidden" name="pub_month" id="pub_month" value="{{form.pub_month.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
-          <label for="target_period_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">対象年度</label>
+          <label for="target_period" class="col-form-label justify-content-start col-sm-3 col-lg-2">対象年度</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.target_period_1|add_class:"w-25" }}<span class="ml-2">年度</span>
+            {{ form.target_period|add_class:"w-25 form-control" }}<span class="ml-2">年度</span>
+            {% if is_edit == True %}
+            <input type="hidden" name="target_period" id="target_period" value="{{form.target_period.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
-          <label for="sales_amount_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">売上高</label>
+          <label for="sales_amount" class="col-form-label justify-content-start col-sm-3 col-lg-2">売上高</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.sales_amount_1 }}
+            {{ form.sales_amount|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
-          <label for="operating_income_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業利益</label>
+          <label for="operating_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業利益</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.operating_income_1 }}
+            {{ form.operating_income|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
-          <label for="ordinary_income_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">経常利益</label>
+          <label for="ordinary_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">経常利益</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.ordinary_income_1 }}
+            {{ form.ordinary_income|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
-          <label for="net_income_1" class="col-form-label justify-content-start col-sm-3 col-lg-2">純利益</label>
+          <label for="net_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">純利益</label>
           <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.net_income_1 }}
+            {{ form.net_income|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
           <label for="per" class="col-form-label justify-content-start col-sm-3 col-lg-2">予想PER</label>
           <div class="col-sm-9 col-lg-10">
-            {{ form.per_1|add_class:"w-25" }}
+            {{ form.per|add_class:"w-25 form-control" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="is_established" class="col-form-label justify-content-start col-sm-3 col-lg-2">確定</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.is_established|add_class:"form-control" }}
           </div>
         </div>
 
         <div class="clearfix my-5">
           <div class="text-center">
+            {% if is_edit == True %}
+            <a href="{% url 'performance_info' stock_code=stock_code source=form.source.value pub_year=form.pub_year.value pub_month=form.pub_month.value target_period=form.target_period.value %}" class="btn btn-secondary">Back</a>
+            {% endif %}
             <button type="submit" class="btn btn-primary">{{ is_edit|yesno:"Update,Register," }}</button>
           </div>
         </div>

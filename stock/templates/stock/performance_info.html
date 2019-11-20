@@ -1,0 +1,95 @@
+{% extends 'stock/base.html' %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+<article>
+  <section class="col-md-10 mx-auto">
+    <h1>{{title}}</h1>
+
+    <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock_code %}">Stock Detail</a></p>
+    <div>
+      <div class="form-group row">
+        <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ stock_code }}
+          <input type="hidden" name="stock_code" id="stock_code" value="{{ stock_code }}" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="source" class="col-form-label justify-content-start col-sm-3 col-lg-2">情報ソース</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.source }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.pub_year }}年
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="pub_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行月</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.pub_month }}月
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="target_period" class="col-form-label justify-content-start col-sm-3 col-lg-2">対象年度</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.target_period }}年度
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="sales_amount" class="col-form-label justify-content-start col-sm-3 col-lg-2">売上高</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.sales_amount }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="operating_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">営業利益</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.operating_income }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ordinary_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">経常利益</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.ordinary_income }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="net_income" class="col-form-label justify-content-start col-sm-3 col-lg-2">純利益</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.net_income }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="per" class="col-form-label justify-content-start col-sm-3 col-lg-2">予想PER</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.per }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="is_established" class="col-form-label justify-content-start col-sm-3 col-lg-2">確定</label>
+        <div class="col-sm-9 col-lg-10">
+          {{ performance.is_established|yesno:"確定済,未確定," }}
+        </div>
+      </div>
+      <p class="text-right small">Updated: {{ performance.updated_date }}</p>
+    </div>
+    <div class="text-center my-5">
+      <div class="">
+        <a href="{% url 'performance_edit' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}" class="btn btn-primary">Edit</a>
+      </div>
+    </div>
+    <div class="text-right my-5">
+      <div class="">
+        <a href="{% url 'performance_delete' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}" class="text-danger">Delete</a>
+      </div>
+    </div>
+  </section>
+</article>
+{% endblock %}

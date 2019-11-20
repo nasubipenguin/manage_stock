@@ -32,7 +32,7 @@ class Performance(models.Model):
     pub_year = models.IntegerField()
     pub_month = models.IntegerField()
     target_period = models.IntegerField()
-    is_established = models.IntegerField()
+    is_established = models.BooleanField()
     sales_amount = models.IntegerField()
     operating_income = models.IntegerField()
     ordinary_income = models.IntegerField()
@@ -46,7 +46,7 @@ class Performance(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.stock_code) + ':' + str(self.target_period) + '[' + self.source  + ' ' + str(self.pub_year)  + '/' + str(self.pub_month) + ']'
+        return str(self.stock_code) + '[' + str(self.source)  + ' ' + str(self.pub_year)  + '/' + str(self.pub_month) + ']'+ ':' + str(self.target_period)
 
 
 # Shikiho

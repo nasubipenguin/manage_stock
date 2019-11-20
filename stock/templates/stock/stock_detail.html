@@ -32,6 +32,7 @@
       </div>
     </div>
 
+    <h2>Fundamentals</h2>
     <div class="mt-4 table-responsive-md">
       <table class="table table-striped">
         <thead class="small text-center">
@@ -72,40 +73,16 @@
           </tr>
           {% endfor %}
         </tbody>
-      </div>
-
-    <div class="mt-4 table-responsive-md">
-      <!--<table class="table table-striped">-->
-        <!--<thead class="small text-center">-->
-          <!--<tr>-->
-            <!--<th scope="col">&nbsp;</th>-->
-            <!--<th scope="col">コード</th>-->
-            <!--<th scope="col">銘柄名</th>-->
-            <!--<th scope="col">備考</th>-->
-            <!--<th scope="col">株価</th>-->
-            <!--<th scope="col">前日終値<br>比較</th>-->
-            <!--<th scope="col">購入金額</th>-->
-            <!--<th scope="col">損切価格</th>-->
-            <!--<th scope="col">利益確定<br>価格</th>-->
-          <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-      <!--{% for stock in stocks %}-->
-          <!--<tr>-->
-            <!--<td>{{stock.watch_flag|yesno:"○,ー,"}}</td>-->
-            <!--<td><a href="/{{stock.stock_code}}/">{{stock.stock_code}}</a></td>-->
-            <!--<td>{{stock.stock_name}}</td>-->
-            <!--<td>{{stock.notes}}</td>-->
-            <!--<td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">日経</a></td>-->
-            <!--<td></td>-->
-            <!--<td></td>-->
-            <!--<td></td>-->
-            <!--<td></td>-->
-          <!--</tr>-->
-      <!--{% endfor %}-->
-        <!--</tbody>-->
-      <!--</table>-->
+      </table>
     </div>
+
+    <h2>Performance</h2>
+    <div class="mt-4 table-responsive-md">
+    {% for performance in performances %}
+      <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">{{ performance.pub_year }}/{{ performance.pub_month }}</a>
+    {% endfor %}
+    </div>
+
   </section>
 </article>
 {% endblock %}
