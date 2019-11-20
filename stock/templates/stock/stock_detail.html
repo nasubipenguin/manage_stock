@@ -6,7 +6,7 @@
     <span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span>
     <h1>{{title}}</h1>
 
-    <p class="text-right small"><a href="/{{stock.stock_code}}/">Update Stock Info</a></p>
+    <p class="text-right small"><a href="{% url 'stock_edit' stock_code=stock.stock_code %}">Update Stock Info</a></p>
     <div class="clearfix">
       <div class="float-md-left">
         <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
@@ -32,6 +32,21 @@
       </div>
     </div>
 
+    <div class="mt-4 table-responsive-md">
+      <table class="table table-striped">
+        <thead class="small text-center">
+          <tr>
+            <th scope="col">発行年月</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for shikiho in shikihos %}
+          <tr>
+            <td><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month  %}">{{ shikiho.pub_year }}/{{ shikiho.pub_month }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </div>
 
     <div class="mt-4 table-responsive-md">
       <!--<table class="table table-striped">-->

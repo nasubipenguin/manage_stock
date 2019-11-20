@@ -9,10 +9,10 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
-    {% if is_edit is None %}
+    {% if exists is True %}
     <div class="alert alert-danger" role="alert">
-      Stock code {{ stock_code }} already exists.<br>
-      Confirm the inputted code or <a href="{% url 'shikiho_info' stock_code=stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}">update it from here</a>.
+      Shikiho info of code {{ stock_code }} published {{ form.pub_year.value }}/{{ form.pub_month.value }} already exists.<br>
+      Confirm the inputted year/month or <a href="{% url 'shikiho_info' stock_code=stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}">update it from here</a>.
     </div>
     {% endif %}
 
@@ -29,12 +29,18 @@
           <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ form.pub_year|add_class:"w-25 form-control" }}<span class="ml-2">年</span>
+            {% if is_edit == True %}
+            <input type="hidden" name="pub_year" id="pub_year" value="{{form.pub_year.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
           <label for="pub_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行月</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ form.pub_month|add_class:"w-25 form-control" }}<span class="ml-2">月</span>
+            {% if is_edit == True %}
+            <input type="hidden" name="pub_month" id="pub_month" value="{{form.pub_month.value}}" >
+            {% endif %}
           </div>
         </div>
         <div class="form-group row">
