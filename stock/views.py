@@ -1,3 +1,4 @@
+import math
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -197,5 +198,7 @@ def performance_delete(request, stock_code, source, pub_year, pub_month, target_
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     shikihos = Shikiho.objects.filter(stock_code=stock_code)
-    performances = Performance.objects.filter(stock_code=stock_code)
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'performances': performances})
+    #established_performances = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
+    established_performances = Performance.objects.filter(stock_code=stock_code).order_by('target_period')
+
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'established_performances': established_performances})

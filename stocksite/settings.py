@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stock.apps.StockConfig',
     'widget_tweaks',
+    'django_template_maths',
 ]
 
 MIDDLEWARE = [

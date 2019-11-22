@@ -38,6 +38,7 @@ class Performance(models.Model):
     ordinary_income = models.IntegerField()
     net_income = models.IntegerField()
     per = models.FloatField()
+    notes = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
 

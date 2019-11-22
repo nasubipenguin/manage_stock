@@ -26,7 +26,7 @@ class PerformanceForm(forms.ModelForm):
 
     class Meta:
         model = Performance
-        fields = ('source','pub_year','pub_month','target_period','is_established','sales_amount', 'operating_income', 'ordinary_income', 'net_income', 'per', 'updated_date')
+        fields = ('source','pub_year','pub_month','target_period','is_established','sales_amount', 'operating_income', 'ordinary_income', 'net_income', 'per', 'notes', 'updated_date')
 
 class ShikihoForm(forms.ModelForm):
     operating_cf = forms.fields.ChoiceField(

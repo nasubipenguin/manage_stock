@@ -1,4 +1,5 @@
 {% extends 'stock/base.html' %}
+{% load django_template_maths %}
 
 {% block content %}
 <article>
@@ -78,11 +79,50 @@
 
     <h2>Performance</h2>
     <div class="mt-4 table-responsive-md">
-    {% for performance in performances %}
-      <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">{{ performance.pub_year }}/{{ performance.pub_month }}</a>
-    {% endfor %}
+      <table class="table table-striped">
+        <thead class="small text-center">
+          <tr>
+            <th scope="col" rowspan="2">年度</th>
+            <th scope="col" rowspan="2">ソース</th>
+            <th scope="col" rowspan="2">売上高</th>
+            <th scope="col" rowspan="2">経常利益</th>
+            <th scope="col" rowspan="2">純利益</th>
+            <th scope="col" colspan="3">前年度増減率: 5%↑</th>
+            <th scope="col" rowspan="2">売上高経常利益率</th>
+            <th scope="col" rowspan="2">経常利益純利益率</th>
+            <th scope="col" rowspan="2">予想PER</th>
+            <th scope="col" rowspan="2">備考</th>
+          </tr>
+          <tr>
+            <th scope="col">売上高</th>
+            <th scope="col">経常利益</th>
+            <th scope="col">純利益</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for performance in established_performances %}
+          <tr>
+            <td>{{ performance.target_period }}</td>
+            <td><a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
+              {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}</a></td>
+            <td>{{ performance.sales_amount }}</td>
+            <td>{{ performance.ordinary_income }}</td>
+            <td>{{ performance.net_income }}</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>{{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}</td>
+            <td>{{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}</td>
+            <td>{{ performance.per }}</td>
+            <td>{{ performance.notes|default:"" }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
     </div>
-
   </section>
 </article>
 {% endblock %}
