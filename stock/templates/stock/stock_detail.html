@@ -108,12 +108,9 @@
             <td>{{ performance.sales_amount }}</td>
             <td>{{ performance.ordinary_income }}</td>
             <td>{{ performance.net_income }}</td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
+            <td>{{ performance.sales_amount_yoy }}</td>
+            <td>{{ performance.ordinary_income_yoy }}</td>
+            <td>{{ performance.net_income_yoy }}</td>
             <td>{{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}</td>
             <td>{{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}</td>
             <td>{{ performance.per }}</td>

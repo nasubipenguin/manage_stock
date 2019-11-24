@@ -1,4 +1,5 @@
 import math
+
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -198,7 +199,24 @@ def performance_delete(request, stock_code, source, pub_year, pub_month, target_
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     shikihos = Shikiho.objects.filter(stock_code=stock_code)
-    #established_performances = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
+#    established_performances = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
     established_performances = Performance.objects.filter(stock_code=stock_code).order_by('target_period')
+
+    pre_sales_amount = 0;
+    pre_ordinary_income = 0;
+    pre_net_income = 0;
+
+    for i, established_performance in established_performances:
+        if(pre_sales_amount != 0):
+            established_performance.sales_amount_yoy = math.round((established_performance.sales_amount / pre_sales_amount) * 100 , 2)
+        if (pre_sales_amount != 0):
+            established_performance.ordinary_income_yoy = math.round((established_performance.ordinary_income / pre_ordinary_income) * 100, 2)
+        if (pre_sales_amount != 0):
+            established_performance.net_income_yoy = math.round((established_performance.net_income / pre_net_income) * 100, 2)
+
+        established_performances[i] = established_performance
+        pre_sales_amount = established_performance.sales_amount
+        pre_ordinary_income = established_performance.ordinary_income
+        pre_net_income = established_performance.net_income
 
     return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'established_performances': established_performances})
