@@ -39,49 +39,6 @@
     </div>
   </section>
   <section>
-    <h2>Fundamentals</h2>
-    <div class="mt-4 table-responsive-md">
-      <table class="table table-striped">
-        <thead class="small text-center">
-          <tr>
-            <th scope="col" rowspan="2">発行年月</th>
-            <th scope="col">自己資本比率</th>
-            <th scope="col">ROE</th>
-            <th scope="col">ROA</th>
-            <th scope="col">営業CF</th>
-            <th scope="col">投資CF</th>
-            <th scope="col">財務CF</th>
-            <th scope="col">時価総額（億）</th>
-            <th scope="col">株主価値（億）</th>
-          </tr>
-          <tr>
-            <th scope="col" colspan="2">見出し1</th>
-            <th scope="col" colspan="2">見出し2</th>
-            <th scope="col" colspan="4">備考	</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho_latest.pub_year pub_month=shikiho_latest.pub_month  %}">{{ shikiho_latest.pub_year }}/{{ shikiho_latest.pub_month }}</a></td>
-            <td class="text-right">{{ shikiho_latest.capital_ratio }}</td>
-            <td class="text-right">{{ shikiho_latest.roe }}</td>
-            <td class="text-right">{{ shikiho_latest.roa }}</td>
-            <td class="text-center">{{ shikiho_latest.operating_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho_latest.investing_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho_latest.financing_cf|yesno:"+,-," }}</td>
-            <td class="text-right">{{ shikiho_latest.market_capitalization }}</td>
-            <td class="text-right"></td>
-          </tr>
-          <tr>
-            <td colspan="2">{{ shikiho_latest.headline_1|default:"" }}</td>
-            <td colspan="2">{{ shikiho_latest.headline_2|default:"" }}</td>
-            <td colspan="4">{{ shikiho_latest.notes }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="text-right small"><a href="{% url 'shikiho_all' stock_code=stock.stock_code %}">History >></a></p>
-    </div>
-
     <h2>Performance</h2>
     <div class="mt-4 table-responsive-md">
       <table class="table table-striped">
@@ -107,15 +64,15 @@
           </tr>
         </thead>
         <tbody>
-        {% for performance in performances_latest %}
+        {% for performance in performances %}
           <tr>
             <td>{{ performance.is_established|yesno:'○,,' }}</td>
             <td>{{ performance.target_period }}</td>
-            <td>
-              {% if performance.source == 1 %}四
-              {% elif performance.source == 2 %}会
-              {% endif %}
-            </td>
+              <td>
+                {% if performance.source == 1 %}四
+                {% elif performance.source == 2 %}会
+                {% endif %}
+              </td>
             <td>
               <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
               {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}
@@ -153,7 +110,7 @@
         {% endfor %}
         </tbody>
       </table>
-      <p class="text-right small"><a href="{% url 'performance_all' stock_code=stock.stock_code %}">History >></a></p>
+      <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Latest >></a></p>
     </div>
   </section>
 </article>

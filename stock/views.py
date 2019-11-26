@@ -9,6 +9,7 @@ from .forms import StockForm, ShikihoForm, PerformanceForm
 
 
 # Stock
+#----------------------------------
 def stock_list(request):
     stocks = Stock.objects.filter(updated_date__lte=timezone.now())
     if request.GET.get('watch_flag'):
@@ -72,6 +73,7 @@ def stock_delete(request, stock_code):
     return redirect('stock_list')
 
 # Shikiho
+#----------------------------------
 def shikiho_new(request, stock_code):
     if request.method == "POST":
         form = ShikihoForm(request.POST)
@@ -132,6 +134,7 @@ def shikiho_delete(request, stock_code, pub_year, pub_month):
     return redirect('stock_detail', stock_code=stock_code)
 
 # Performance
+#----------------------------------
 def performance_new(request, stock_code):
     if request.method == "POST":
         form = PerformanceForm(request.POST)
@@ -195,11 +198,12 @@ def performance_delete(request, stock_code, source, pub_year, pub_month, target_
     performance.delete()
     return redirect('stock_detail', stock_code=stock_code)
 
+
 # Summary
+#----------------------------------
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
-    shikihos = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month')
-    shikiho_latest = shikihos.first()
+    shikiho_latest = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month').first()
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
     latest_target_period = established.last().target_period
@@ -208,8 +212,27 @@ def stock_detail(request, stock_code):
     performances_all = established | predicted
     performances_latest = calc_and_set_performance(performances_all)
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'shikiho_latest': shikiho_latest, 'performances_latest': performances_latest, 'performances_all': performances_all })
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikiho_latest': shikiho_latest, 'performances_latest': performances_latest })
 
+def shikiho_all(request, stock_code):
+    stock = get_object_or_404(Stock, stock_code=stock_code)
+    shikihos = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month')
+
+    return render(request, 'stock/shikiho_all.html', {'title': 'Shikiho History', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos })
+
+def performance_all(request, stock_code):
+    stock = get_object_or_404(Stock, stock_code=stock_code)
+
+    established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
+    latest_target_period = established.last().target_period
+    predicted = Performance.objects.filter(stock_code=stock_code, target_period__gt=latest_target_period).order_by('target_period', '-pub_year', '-pub_month', '-source')
+
+    performances = established | predicted
+
+    return render(request, 'stock/performance_all.html', {'title': 'Performance History', 'stock_code': stock_code, 'stock': stock, 'performances': performances })
+
+# functions
+#----------------------------------
 def calc_and_set_performance(performances):
     result = []
     previous_period = -1
