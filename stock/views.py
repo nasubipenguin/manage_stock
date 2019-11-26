@@ -198,25 +198,41 @@ def performance_delete(request, stock_code, source, pub_year, pub_month, target_
 # Summary
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
-    shikihos = Shikiho.objects.filter(stock_code=stock_code)
-#    established_performances = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
-    established_performances = Performance.objects.filter(stock_code=stock_code).order_by('target_period')
+    shikihos = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month')
+    shikiho_latest = shikihos.first()
 
-    pre_sales_amount = 0;
-    pre_ordinary_income = 0;
-    pre_net_income = 0;
+    established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
+    latest_target_period = established.last().target_period
+    predicted = Performance.objects.filter(stock_code=stock_code, target_period__gt=latest_target_period).order_by('target_period', '-pub_year', '-pub_month', '-source')
 
-    for i, established_performance in established_performances:
-        if(pre_sales_amount != 0):
-            established_performance.sales_amount_yoy = math.round((established_performance.sales_amount / pre_sales_amount) * 100 , 2)
-        if (pre_sales_amount != 0):
-            established_performance.ordinary_income_yoy = math.round((established_performance.ordinary_income / pre_ordinary_income) * 100, 2)
-        if (pre_sales_amount != 0):
-            established_performance.net_income_yoy = math.round((established_performance.net_income / pre_net_income) * 100, 2)
+    performances_all = established | predicted
+    performances_latest = calc_and_set_performance(performances_all)
 
-        established_performances[i] = established_performance
-        pre_sales_amount = established_performance.sales_amount
-        pre_ordinary_income = established_performance.ordinary_income
-        pre_net_income = established_performance.net_income
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'shikiho_latest': shikiho_latest, 'performances_latest': performances_latest, 'performances_all': performances_all })
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos, 'established_performances': established_performances})
+def calc_and_set_performance(performances):
+    result = []
+    previous_period = -1
+    pre_sales_amount = -1;
+    pre_ordinary_income = -1;
+    pre_net_income = -1;
+
+    for performance in performances:
+        # Select max (pub_year+pub_month) by target_period
+        if ( performance.target_period != previous_period ):
+            # Set YoY
+            if(pre_sales_amount != -1):
+                performance.sales_amount_yoy = (performance.sales_amount  -  pre_sales_amount) / pre_sales_amount
+            if (pre_ordinary_income != -1):
+                performance.ordinary_income_yoy = (performance.ordinary_income - pre_ordinary_income) / pre_ordinary_income
+            if (pre_net_income != -1):
+                performance.net_income_yoy = (performance.net_income - pre_net_income) / pre_net_income
+            performance.save()
+            result.append(performance)
+
+            pre_sales_amount = performance.sales_amount
+            pre_ordinary_income = performance.ordinary_income
+            pre_net_income = performance.net_income
+            previous_period = performance.target_period
+
+    return result

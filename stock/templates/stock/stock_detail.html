@@ -32,8 +32,126 @@
         </table>
       </div>
     </div>
-
+  </section>
+  <section>
     <h2>Fundamentals</h2>
+    <div class="mt-4 table-responsive-md">
+      <table class="table table-striped">
+        <thead class="small text-center">
+          <tr>
+            <th scope="col" rowspan="2">発行年月</th>
+            <th scope="col">自己資本比率</th>
+            <th scope="col">ROE</th>
+            <th scope="col">ROA</th>
+            <th scope="col">営業CF</th>
+            <th scope="col">投資CF</th>
+            <th scope="col">財務CF</th>
+            <th scope="col">時価総額（億）</th>
+            <th scope="col">株主価値（億）</th>
+          </tr>
+          <tr>
+            <th scope="col" colspan="2">見出し1</th>
+            <th scope="col" colspan="2">見出し2</th>
+            <th scope="col" colspan="4">備考	</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho_latest.pub_year pub_month=shikiho_latest.pub_month  %}">{{ shikiho_latest.pub_year }}/{{ shikiho_latest.pub_month }}</a></td>
+            <td class="text-right">{{ shikiho_latest.capital_ratio }}</td>
+            <td class="text-right">{{ shikiho_latest.roe }}</td>
+            <td class="text-right">{{ shikiho_latest.roa }}</td>
+            <td class="text-center">{{ shikiho_latest.operating_cf|yesno:"+,-," }}</td>
+            <td class="text-center">{{ shikiho_latest.investing_cf|yesno:"+,-," }}</td>
+            <td class="text-center">{{ shikiho_latest.financing_cf|yesno:"+,-," }}</td>
+            <td class="text-right">{{ shikiho_latest.market_capitalization }}</td>
+            <td class="text-right"></td>
+          </tr>
+          <tr>
+            <td colspan="2">{{ shikiho_latest.headline_1|default:"" }}</td>
+            <td colspan="2">{{ shikiho_latest.headline_2|default:"" }}</td>
+            <td colspan="4">{{ shikiho_latest.notes }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Performance</h2>
+    <div class="mt-4 table-responsive-md">
+      <table class="table table-striped">
+        <thead class="small text-center">
+          <tr>
+            <th scope="col" rowspan="2">確定</th>
+            <th scope="col" rowspan="2">年度</th>
+            <th scope="col" rowspan="2">ソース</th>
+            <th scope="col" rowspan="2">発行年月</th>
+            <th scope="col" rowspan="2">売上高</th>
+            <th scope="col" rowspan="2">経常利益</th>
+            <th scope="col" rowspan="2">純利益</th>
+            <th scope="col" colspan="3">前年度増減率: 5%↑</th>
+            <th scope="col" rowspan="2">売上高経常利益率</th>
+            <th scope="col" rowspan="2">経常利益純利益率</th>
+            <th scope="col" rowspan="2">予想PER</th>
+            <th scope="col" rowspan="2">備考</th>
+          </tr>
+          <tr>
+            <th scope="col">売上高</th>
+            <th scope="col">経常利益</th>
+            <th scope="col">純利益</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for performance in performances_latest %}
+          <tr>
+            <td>{{ performance.is_established|yesno:'○,,' }}</td>
+            <td>{{ performance.target_period }}</td>
+            <td>
+              {% if performance.source == 1 %}四
+              {% elif performance.source == 2 %}会
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
+              {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}
+              </a>
+            </td>
+            <td>{{ performance.sales_amount }}</td>
+            <td>{{ performance.ordinary_income }}</td>
+            <td>{{ performance.net_income }}</td>
+            <td>
+              {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
+                -
+              {% else %}
+                {{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}%
+              {% endif %}
+            </td>
+            <td>
+              {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
+                -
+              {% else %}
+                {{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}%
+              {% endif %}
+            </td>
+            <td>{{ performance.per }}</td>
+            <td>{{ performance.notes|default:"" }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section>
+    <h2>History</h2>
+    <h3>Fundamentals</h3>
     <div class="mt-4 table-responsive-md">
       <table class="table table-striped">
         <thead class="small text-center">
@@ -77,13 +195,15 @@
       </table>
     </div>
 
-    <h2>Performance</h2>
+    <h3>Performance</h3>
     <div class="mt-4 table-responsive-md">
       <table class="table table-striped">
         <thead class="small text-center">
           <tr>
+            <th scope="col" rowspan="2">確定</th>
             <th scope="col" rowspan="2">年度</th>
             <th scope="col" rowspan="2">ソース</th>
+            <th scope="col" rowspan="2">発行年月</th>
             <th scope="col" rowspan="2">売上高</th>
             <th scope="col" rowspan="2">経常利益</th>
             <th scope="col" rowspan="2">純利益</th>
@@ -100,19 +220,46 @@
           </tr>
         </thead>
         <tbody>
-        {% for performance in established_performances %}
+        {% for performance in performances_all %}
           <tr>
+            <td>{{ performance.is_established|yesno:'○,,' }}</td>
             <td>{{ performance.target_period }}</td>
-            <td><a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
-              {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}</a></td>
+              <td>
+                {% if performance.source == 1 %}四
+                {% elif performance.source == 2 %}会
+                {% endif %}
+              </td>
+            <td>
+              <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
+              {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}
+              </a>
+            </td>
             <td>{{ performance.sales_amount }}</td>
             <td>{{ performance.ordinary_income }}</td>
             <td>{{ performance.net_income }}</td>
-            <td>{{ performance.sales_amount_yoy }}</td>
-            <td>{{ performance.ordinary_income_yoy }}</td>
-            <td>{{ performance.net_income_yoy }}</td>
-            <td>{{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}</td>
-            <td>{{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}</td>
+            <td>
+              {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%
+            </td>
+            <td>
+              {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
+                -
+              {% else %}
+                {{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}%
+              {% endif %}
+            </td>
+            <td>
+              {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
+                -
+              {% else %}
+                {{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}%
+              {% endif %}
+            </td>
             <td>{{ performance.per }}</td>
             <td>{{ performance.notes|default:"" }}</td>
           </tr>
