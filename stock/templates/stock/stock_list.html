@@ -4,6 +4,7 @@
 <article>
   <section>
     <h1>{{title}}</h1>
+
     <p class="text-right small"><a href="{% url 'stock_new' %}">Register Stock Info >></a></p>
     <div class="mt-4 table-responsive-md">
       <form method="GET" action="" id="search_form">
@@ -43,18 +44,25 @@
             <th scope="col">備考</th>
             <th scope="col">株価</th>
             <th scope="col">Watching</th>
-            <th scope="col">Detail</th>
+            <th scope="col">Links</th>
           </tr>
         </thead>
         <tbody>
       {% for stock in stocks %}
           <tr>
-            <td><a href="{% url 'stock_info' stock_code=stock.stock_code %}">{{stock.stock_code}}</a></td>
+            <td class="text-center">
+              {{stock.stock_code}}<br>
+              <a class="small" href="{% url 'stock_info' stock_code=stock.stock_code %}">Update >></a>
+            </td>
             <td>{{stock.stock_name}}</td>
             <td>{{stock.notes}}</td>
-            <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">日経</a></td>
+            <td class="text-center"><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a></td>
             <td class="text-center">{{stock.watch_flag|yesno:"○,ー,ー"}}</td>
-            <td class="text-center"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">more</a></td>
+            <td class="text-right small">
+              <a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a><br>
+              <a href="{% url 'shikiho_all' stock_code=stock.stock_code %}">Fundamentals History >></a><br>
+              <a href="{% url 'performance_all' stock_code=stock.stock_code %}">Performance History >></a>
+            </td>
           </tr>
       {% endfor %}
         </tbody>

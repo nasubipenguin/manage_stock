@@ -82,7 +82,7 @@ def shikiho_new(request, stock_code):
         pub_month = request.POST['pub_month']
         if Shikiho.objects.filter(stock_code=stock_code, pub_year=pub_year, pub_month=pub_month).exists():
             # duplicate -> edit
-            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code':stock_code, 'pub_year':pub_year, 'pub_month':pub_month, 'form': form, 'exists': True})
+            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Fundamentals Info', 'stock_code':stock_code, 'pub_year':pub_year, 'pub_month':pub_month, 'form': form, 'exists': True})
         if form.is_valid():
             shikiho = form.save(commit=False)
             shikiho.updated_date = timezone.now()
@@ -93,15 +93,15 @@ def shikiho_new(request, stock_code):
             return redirect('shikiho_info', stock_code=stock_code, pub_year=shikiho.pub_year, pub_month=shikiho.pub_month)
         else:
             # not_valid -> new
-            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'pub_year':pub_year, 'pub_month':pub_month, 'form': form, 'is_edit': False})
+            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Fundamentals Info', 'stock_code': stock_code, 'pub_year':pub_year, 'pub_month':pub_month, 'form': form, 'is_edit': False})
     else:
         form = ShikihoForm()
     # new
-    return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'form': form, 'is_edit': False})
+    return render(request, 'stock/shikiho_edit.html', {'title': 'Register Fundamentals Info', 'stock_code': stock_code, 'form': form, 'is_edit': False})
 
 def shikiho_info(request, stock_code, pub_year, pub_month):
     shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
-    return render(request, 'stock/shikiho_info.html', {'title': 'Shikiho Info', 'stock_code': stock_code, 'shikiho': shikiho})
+    return render(request, 'stock/shikiho_info.html', {'title': 'Fundamentals Info', 'stock_code': stock_code, 'shikiho': shikiho})
 
 def shikiho_edit(request, stock_code, pub_year, pub_month):
     shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
@@ -117,13 +117,13 @@ def shikiho_edit(request, stock_code, pub_year, pub_month):
             return redirect('shikiho_info', stock_code=stock_code, pub_year=shikiho.pub_year, pub_month=shikiho.pub_month)
         else:
             # not_valid -> edit
-            return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form, 'is_edit': True})
+            return render(request, 'stock/shikiho_edit.html', {'title': 'Update Fundamentals Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form, 'is_edit': True})
     else:
         form = ShikihoForm(instance=shikiho)
         form.fields['pub_year'].widget.attrs['disabled'] = 'disabled'
         form.fields['pub_month'].widget.attrs['disabled'] = 'disabled'
     # edit
-    return render(request, 'stock/shikiho_edit.html', {'title': 'Register Shikiho Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form, 'is_edit': True})
+    return render(request, 'stock/shikiho_edit.html', {'title': 'Update Fundamentals Info', 'stock_code': stock_code, 'pub_year': pub_year, 'pub_month': pub_month, 'form': form, 'is_edit': True})
 
 def shikiho_delete(request, stock_code, pub_year, pub_month):
     try:
@@ -216,7 +216,7 @@ def stock_detail(request, stock_code):
     if( len(performance_latest) == 0 ):
         performance_latest = None
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Summary', 'stock_code': stock_code, 'stock': stock, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
 
 def shikiho_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
@@ -225,7 +225,7 @@ def shikiho_all(request, stock_code):
     if (len(shikihos) == 0):
         shikihos = None
 
-    return render(request, 'stock/shikiho_all.html', {'title': 'Shikiho History', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos })
+    return render(request, 'stock/shikiho_all.html', {'title': 'Fundamentals History', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos })
 
 def performance_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)

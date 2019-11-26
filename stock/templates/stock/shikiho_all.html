@@ -17,8 +17,8 @@
       <div class="float-md-right">
         <table class="table small">
           <tr>
-            <th>リンク</th>
-            <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">日経</a></td>
+            <th>Links</th>
+            <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">NIKKEI</a></td>
             <td>
             {% if not stock.ir_url is None %}
             <a href="{{stock.ir_url|default:''}}" target="_blank">IR</a>
@@ -29,10 +29,10 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <th>業績登録</th>
-            <td><a href="{% url 'performance_new' stock_code=stock.stock_code %}">業績登録</a></td>
-            <td><a href="{% url 'shikiho_new' stock_code=stock.stock_code %}">四季報</a></td>
-            <td><a href="">決算短信</a></td>
+            <th>Register</th>
+            <td><a href="{% url 'performance_new' stock_code=stock.stock_code %}">Performance</a></td>
+            <td><a href="{% url 'shikiho_new' stock_code=stock.stock_code %}">Fundamentals</a></td>
+            <td><a href="">Financial Summary</a></td>
           </tr>
         </table>
       </div>
@@ -84,7 +84,7 @@
         {% endfor %}
         </tbody>
       </table>
-      <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Latest >></a></p>
+      <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
     {% endif %}
     </div>
   </section>
