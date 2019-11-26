@@ -206,17 +206,24 @@ def stock_detail(request, stock_code):
     shikiho_latest = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month').first()
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
-    latest_target_period = established.last().target_period
-    predicted = Performance.objects.filter(stock_code=stock_code, target_period__gt=latest_target_period).order_by('target_period', '-pub_year', '-pub_month', '-source')
+    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', '-pub_year', '-pub_month', '-source')
+    if( established.count() > 0 ):
+        latest_target_period = established.last().target_period
+        predicted = predicted.filter(target_period__gt=latest_target_period)
 
     performances_all = established | predicted
-    performances_latest = calc_and_set_performance(performances_all)
+    performance_latest = calc_and_set_performance(performances_all)
+    if( len(performance_latest) == 0 ):
+        performance_latest = None
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikiho_latest': shikiho_latest, 'performances_latest': performances_latest })
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Detail', 'stock_code': stock_code, 'stock': stock, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
 
 def shikiho_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     shikihos = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month')
+
+    if (len(shikihos) == 0):
+        shikihos = None
 
     return render(request, 'stock/shikiho_all.html', {'title': 'Shikiho History', 'stock_code': stock_code, 'stock': stock, 'shikihos': shikihos })
 
@@ -224,10 +231,14 @@ def performance_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
-    latest_target_period = established.last().target_period
-    predicted = Performance.objects.filter(stock_code=stock_code, target_period__gt=latest_target_period).order_by('target_period', '-pub_year', '-pub_month', '-source')
+    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', '-pub_year', '-pub_month', '-source')
+    if (established.count() > 0):
+        latest_target_period = established.last().target_period
+        predicted = predicted.filter(target_period__gt=latest_target_period)
 
     performances = established | predicted
+    if( len(performances) == 0 ):
+        performances = None
 
     return render(request, 'stock/performance_all.html', {'title': 'Performance History', 'stock_code': stock_code, 'stock': stock, 'performances': performances })
 
