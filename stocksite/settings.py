@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'stock.apps.StockConfig',
     'widget_tweaks',
     'django_template_maths',
+    'django.contrib.humanize',
 ]
+NUMBER_GROUPING = 3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,5 +1,6 @@
 {% extends 'stock/base.html' %}
 {% load django_template_maths %}
+{% load humanize %}
 
 {% block content %}
 <article>
@@ -44,7 +45,7 @@
     {% if shikihos is Null %}
       <p>Nothing is registered.</p>
     {% else %}
-      <table class="table table-striped">
+      <table class="table table-striped table-bordered">
         <thead class="small text-center">
           <tr>
             <th scope="col" rowspan="2">発行年月</th>
@@ -67,13 +68,27 @@
         {% for shikiho in shikihos %}
           <tr>
             <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month  %}">{{ shikiho.pub_year }}/{{ shikiho.pub_month }}</a></td>
-            <td class="text-right">{{ shikiho.capital_ratio }}</td>
-            <td class="text-right">{{ shikiho.roe }}</td>
-            <td class="text-right">{{ shikiho.roa }}</td>
-            <td class="text-center">{{ shikiho.operating_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho.investing_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho.financing_cf|yesno:"+,-," }}</td>
-            <td class="text-right">{{ shikiho.market_capitalization }}</td>
+            <td class="text-right">
+              <span{% if shikiho.capital_ratio < 40 %} class="text-danger"{% endif %}>{{ shikiho.capital_ratio }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.roe < 10 %} class="text-danger"{% endif %}>{{ shikiho.roe }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.roa < 5 %} class="text-danger"{% endif %}>{{ shikiho.roa }}%</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.operating_cf == False %} class="text-danger"{% endif %}>{{ shikiho.operating_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.investing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.investing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.financing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho.market_capitalization|intcomma }}</span>
+            </td>
             <td class="text-right"></td>
           </tr>
           <tr>

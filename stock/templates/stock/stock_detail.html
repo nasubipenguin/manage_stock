@@ -1,5 +1,6 @@
 {% extends 'stock/base.html' %}
 {% load django_template_maths %}
+{% load humanize %}
 
 {% block content %}
 <article>
@@ -44,7 +45,7 @@
     {% if shikiho_latest is Null %}
       <p>Nothing is registered.</p>
     {% else %}
-      <table class="table table-striped">
+      <table class="table table-striped table-bordered">
         <thead class="small text-center">
           <tr>
             <th scope="col" rowspan="2">発行年月</th>
@@ -66,13 +67,27 @@
         <tbody>
           <tr>
             <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho_latest.pub_year pub_month=shikiho_latest.pub_month  %}">{{ shikiho_latest.pub_year }}/{{ shikiho_latest.pub_month }}</a></td>
-            <td class="text-right">{{ shikiho_latest.capital_ratio }}</td>
-            <td class="text-right">{{ shikiho_latest.roe }}</td>
-            <td class="text-right">{{ shikiho_latest.roa }}</td>
-            <td class="text-center">{{ shikiho_latest.operating_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho_latest.investing_cf|yesno:"+,-," }}</td>
-            <td class="text-center">{{ shikiho_latest.financing_cf|yesno:"+,-," }}</td>
-            <td class="text-right">{{ shikiho_latest.market_capitalization }}</td>
+            <td class="text-right">
+              <span{% if shikiho_latest.capital_ratio < 40 %} class="text-danger"{% endif %}>{{ shikiho_latest.capital_ratio }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho_latest.roe < 10 %} class="text-danger"{% endif %}>{{ shikiho_latest.roe }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho_latest.roa < 5 %} class="text-danger"{% endif %}>{{ shikiho_latest.roa }}%</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho_latest.operating_cf == False %} class="text-danger"{% endif %}>{{ shikiho_latest.operating_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho_latest.investing_cf == True %} class="text-danger"{% endif %}>{{ shikiho_latest.investing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho_latest.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho_latest.financing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho_latest.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho_latest.market_capitalization|intcomma }}</span>
+            </td>
             <td class="text-right"></td>
           </tr>
           <tr>
@@ -128,33 +143,45 @@
               {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}
               </a>
             </td>
-            <td>{{ performance.sales_amount }}</td>
-            <td>{{ performance.ordinary_income }}</td>
-            <td>{{ performance.net_income }}</td>
             <td>
-              {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%
+              {{ performance.sales_amount|intcomma }}円
             </td>
             <td>
-              {{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%
+              {{ performance.ordinary_income|intcomma }}円
             </td>
             <td>
-              {{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%
+              {{ performance.net_income|intcomma }}円
             </td>
+            <td>
+              <span{% if performance.sales_amount_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%</span>
+            </td>
+            <td>
+              <span{% if performance.ordinary_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%</span>
+            </td>
+            <td>
+              <span{% if performance.net_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%</span>
+            </td>
+            {% with rate1=performance.ordinary_income|div:performance.sales_amount %}
             <td>
               {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
                 -
               {% else %}
-                {{ performance.ordinary_income|div:performance.sales_amount|mul:100|floatformat:"-2" }}%
+               <span{% if rate1 < 0.1 %} class="text-danger"{% endif %}>{{ rate1|mul:100|floatformat:"-2" }}%</span>
               {% endif %}
             </td>
+            {% endwith %}
+            {% with rate2=performance.net_income|div:performance.ordinary_income %}
             <td>
-              {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
+              {% if performance.net_income == 0 or performance.ordinary_income == 0 %}
                 -
               {% else %}
-                {{ performance.net_income|div:performance.ordinary_income|mul:100|floatformat:"-2" }}%
+                <span{% if rate2 < 0.6 or rate2 > 0.7 %} class="text-danger"{% endif %}>{{ rate2|mul:100|floatformat:"-2" }}%</span>
               {% endif %}
             </td>
-            <td>{{ performance.per }}</td>
+            {% endwith %}
+            <td>
+              <span{% if performance.per > 30 %} class="text-danger"{% endif %}>{{ performance.per|default:"-" }}</span>
+            </td>
             <td>{{ performance.notes|default:"" }}</td>
           </tr>
         {% endfor %}

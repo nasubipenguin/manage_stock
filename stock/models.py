@@ -41,7 +41,7 @@ class Performance(models.Model):
     operating_income_yoy = models.IntegerField(default=0, null=True)
     ordinary_income_yoy = models.IntegerField(default=0, null=True)
     net_income_yoy = models.IntegerField(default=0, null=True)
-    per = models.FloatField()
+    per = models.FloatField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
