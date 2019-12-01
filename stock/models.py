@@ -62,7 +62,7 @@ class Shikiho(models.Model):
     stock_code = models.ForeignKey(Stock, on_delete=models.CASCADE)
     pub_year = models.IntegerField()
     pub_month = models.IntegerField()
-    market_capitalization = models.IntegerField()
+    market_capitalization = models.FloatField()
     capital_ratio = models.FloatField()
     roe = models.FloatField()
     roa = models.FloatField()

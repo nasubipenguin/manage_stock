@@ -39,30 +39,28 @@
       <table class="table table-striped table-bordered">
         <thead class="small text-center">
           <tr>
+            <th>No</th>
             <th scope="col">銘柄コード</th>
             <th scope="col">銘柄名</th>
-            <th scope="col">備考</th>
-            <th scope="col">株価</th>
-            <th scope="col">Watching</th>
-            <th scope="col">Links</th>
+            <th scope="col">memo</th>
+            <th scope="col">watching</th>
           </tr>
         </thead>
         <tbody>
       {% for stock in stocks %}
           <tr>
+            <th class="text-center">{{ forloop.counter }}</th>
             <td class="text-center">
-              {{stock.stock_code}}<br>
-              <a class="small" href="{% url 'stock_info' stock_code=stock.stock_code %}">Update >></a>
+              {{stock.stock_code}}
+              <br><a class="small" href="{% url 'stock_detail' stock_code=stock.stock_code %}">Summary</a>
             </td>
-            <td>{{stock.stock_name}}</td>
+            <td>
+              {{stock.stock_name}}
+              <br><a class="small" href="{% url 'stock_info' stock_code=stock.stock_code %}">Update</a>
+              &nbsp;<a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a>
+            </td>
             <td>{{stock.notes}}</td>
-            <td class="text-center"><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a></td>
             <td class="text-center">{{stock.watch_flag|yesno:"○,ー,ー"}}</td>
-            <td class="text-right small">
-              <a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a><br>
-              <a href="{% url 'shikiho_all' stock_code=stock.stock_code %}">Fundamentals History >></a><br>
-              <a href="{% url 'performance_all' stock_code=stock.stock_code %}">Performance History >></a>
-            </td>
           </tr>
       {% endfor %}
         </tbody>

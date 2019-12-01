@@ -5,40 +5,40 @@
 {% block content %}
 <article>
   <section>
-    <span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span>
     <h1>{{title}}</h1>
 
-    <p class="text-right small"><a href="{% url 'stock_edit' stock_code=stock.stock_code %}">Update Stock Info >></a></p>
+    <p class="text-right small"><a href="{% url 'stock_info' stock_code=stock.stock_code %}">Stock Info >></a></p>
     <div class="clearfix">
       <div class="float-md-left">
-        <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
-        <p class="d-inline-block ml-3"><span class="badge badge-secondary mr-1 align-text-bottom">業種</span>{{stock.business_type}}</p>
+        <h2>{{ stock.stock_code }}: {{ stock.stock_name }} </h2>
+        <div>
+          <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
+          <p class="d-inline-block ml-3"><span class="badge badge-secondary mr-1 align-text-bottom">業種</span>{{stock.business_type}}</p>
+          <p class="d-inline-block ml-3 small"><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">NIKKEI</a></p>
+          <p class="d-inline-block ml-3 small">
+            {% if not stock.ir_url is None %}<a href="{{stock.ir_url|default:''}}" target="_blank">IR</a>{% endif %}</p>
+          <p class="d-inline-block ml-3"><span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></p>
+        </div>
         <p>{{stock.notes}}</p>
       </div>
       <div class="float-md-right">
         <table class="table small">
           <tr>
-            <th>Links</th>
-            <td><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">NIKKEI</a></td>
-            <td>
-            {% if not stock.ir_url is None %}
-            <a href="{{stock.ir_url|default:''}}" target="_blank">IR</a>
-            {% else %}
-            &nbsp;
-            {% endif %}
-            </td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
             <th>Register</th>
             <td><a href="{% url 'performance_new' stock_code=stock.stock_code %}">Performance</a></td>
             <td><a href="{% url 'shikiho_new' stock_code=stock.stock_code %}">Fundamentals</a></td>
-            <td><a href="">Financial Summary</a></td>
+          </tr>
+          <tr>
+            <th>History</th>
+            <td><a href="{% url 'performance_all' stock_code=stock.stock_code %}">Performance</a></td>
+            <td><a href="{% url 'shikiho_all' stock_code=stock.stock_code %}">Fundamentals</a></td>
           </tr>
         </table>
       </div>
     </div>
+    <hr>
   </section>
+
   <section>
     <h2>Fundamentals</h2>
     <div class="mt-4 table-responsive-md">
@@ -128,12 +128,12 @@
             <th scope="col">純利益</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="text-right">
         {% for performance in performance_latest %}
           <tr>
-            <td>{{ performance.is_established|yesno:'○,,' }}</td>
+            <td class="text-center">{{ performance.is_established|yesno:'○,,' }}</td>
             <td>{{ performance.target_period }}</td>
-            <td>
+            <td class="text-center">
               {% if performance.source == 1 %}四
               {% elif performance.source == 2 %}会
               {% endif %}
@@ -144,22 +144,31 @@
               </a>
             </td>
             <td>
-              {{ performance.sales_amount|intcomma }}円
+              {{ performance.sales_amount|intcomma }}
             </td>
             <td>
-              {{ performance.ordinary_income|intcomma }}円
+              {{ performance.ordinary_income|intcomma }}
             </td>
             <td>
-              {{ performance.net_income|intcomma }}円
+              {{ performance.net_income|intcomma }}
             </td>
             <td>
-              <span{% if performance.sales_amount_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% if forloop.counter0 == 0 %}-
+              {% else %}
+                <span{% if performance.sales_amount_yoy < 0.05 and loop.counter0 != 0 %} class="text-danger"{% endif %}> {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% endif %}
             </td>
             <td>
-              <span{% if performance.ordinary_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% if forloop.counter0 == 0 %}-
+              {% else %}
+                <span{% if performance.ordinary_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% endif %}
             </td>
             <td>
-              <span{% if performance.net_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% if forloop.counter0 == 0 %}-
+              {% else %}
+                <span{% if performance.net_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%</span>
+              {% endif %}
             </td>
             {% with rate1=performance.ordinary_income|div:performance.sales_amount %}
             <td>

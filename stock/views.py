@@ -100,8 +100,9 @@ def shikiho_new(request, stock_code):
     return render(request, 'stock/shikiho_edit.html', {'title': 'Register Fundamentals Info', 'stock_code': stock_code, 'form': form, 'is_edit': False})
 
 def shikiho_info(request, stock_code, pub_year, pub_month):
+    stock = Stock.objects.get(stock_code=stock_code)
     shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
-    return render(request, 'stock/shikiho_info.html', {'title': 'Fundamentals Info', 'stock_code': stock_code, 'shikiho': shikiho})
+    return render(request, 'stock/shikiho_info.html', {'title': 'Fundamentals Info', 'stock': stock, 'shikiho': shikiho})
 
 def shikiho_edit(request, stock_code, pub_year, pub_month):
     shikiho = get_object_or_404(Shikiho, stock_code=stock_code, pub_year=pub_year, pub_month=pub_month)
@@ -163,8 +164,9 @@ def performance_new(request, stock_code):
     return render(request, 'stock/performance_edit.html', {'title': 'Register Performance Info', 'stock_code': stock_code, 'form': form, 'is_edit': False})
 
 def performance_info(request, stock_code, source, pub_year, pub_month, target_period):
+    stock = Stock.objects.get(stock_code=stock_code)
     performance = get_object_or_404(Performance, stock_code=stock_code, source=source, pub_year=pub_year, pub_month=pub_month, target_period=target_period)
-    return render(request, 'stock/performance_info.html', {'title': 'Performance Info', 'stock_code': stock_code, 'performance': performance})
+    return render(request, 'stock/performance_info.html', {'title': 'Performance Info', 'stock': stock, 'performance': performance})
 
 def performance_edit(request, stock_code, source, pub_year, pub_month, target_period):
     performance = get_object_or_404(Performance, stock_code=stock_code, source=source, pub_year=pub_year, pub_month=pub_month, target_period=target_period)
