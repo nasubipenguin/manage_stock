@@ -9,6 +9,12 @@
 <article>
   <section class="col-md-10 mx-auto">
     <h1>{{title}}</h1>
+
+    <div class="text-right small">
+      <p class="d-inline-block"><a href="{% url 'stock_detail' stock_code=stock_code %}">Stock Summary >></a></p>
+      <p class="d-inline-block ml-3"><a href="{% url 'stock_info' stock_code=stock_code %}">Stock Info >></a></p>
+    </div>
+
     {% if exists is True %}
     <div class="alert alert-danger" role="alert">
       Performance info of bellow already exists.<br>
