@@ -233,7 +233,7 @@ def performance_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
-    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', '-pub_year', '-pub_month', '-source')
+    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', 'pub_year', 'pub_month', '-source')
     if (established.count() > 0):
         latest_target_period = established.last().target_period
         predicted = predicted.filter(target_period__gt=latest_target_period)

@@ -42,6 +42,7 @@
             <th>No</th>
             <th scope="col">銘柄コード</th>
             <th scope="col">銘柄名</th>
+            <th scope="col">決算月</th>
             <th scope="col">memo</th>
             <th scope="col">watching</th>
           </tr>
@@ -59,6 +60,7 @@
               <br><a class="small" href="{% url 'stock_info' stock_code=stock.stock_code %}">Update</a>
               &nbsp;<a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a>
             </td>
+            <td class="text-center">{{stock.accounting_month}}月</td>
             <td>{{stock.notes}}</td>
             <td class="text-center">{{stock.watch_flag|yesno:"○,ー,ー"}}</td>
           </tr>
