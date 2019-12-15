@@ -18,7 +18,7 @@ def stock_list(request):
         stocks = stocks.filter(stock_code__exact=request.GET.get('stock_code'))
     if request.GET.get('stock_name'):
         stocks = stocks.filter(stock_name__contains=request.GET.get('stock_name'))
-    stocks = stocks.order_by('stock_code')
+    stocks = stocks.order_by('accounting_month', 'stock_code')
 
     watching = []
     unwatching = []
