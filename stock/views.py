@@ -12,14 +12,16 @@ from .forms import StockForm, ShikihoForm, PerformanceForm, NoteForm
 #----------------------------------
 def stock_list(request):
     stocks = Stock.objects.filter(updated_date__lte=timezone.now())
-    if request.GET.get('watch_flag'):
-        stocks = stocks.filter(watch_flag__exact=request.GET.get('watch_flag'))
+    # if request.GET.get('watch_flag'):
+    #     stocks = stocks.filter(watch_flag__exact=request.GET.get('watch_flag'))
     if request.GET.get('stock_code'):
         stocks = stocks.filter(stock_code__exact=request.GET.get('stock_code'))
     if request.GET.get('stock_name'):
         stocks = stocks.filter(stock_name__contains=request.GET.get('stock_name'))
     stocks = stocks.order_by('stock_code')
-    new_stocks = []
+
+    watching = []
+    unwatching = []
     for stock in stocks:
         latest_notes = ''
         latest_notes_date = ''
@@ -28,9 +30,12 @@ def stock_list(request):
             latest_notes = note.notes
             latest_notes_date = note.publish_date
         new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes':latest_notes, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
-        new_stocks.append(new_stock)
+        if( stock.watch_flag == True):
+            watching.append(new_stock)
+        else:
+            unwatching.append(new_stock)
 
-    return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'stocks': new_stocks})
+    return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'watching': watching, 'unwatching': unwatching})
 
 
 # Stock
@@ -226,7 +231,7 @@ def performance_all(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
-    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', 'pub_year', 'pub_month', '-source')
+    predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', 'pub_year', 'pub_month', 'source')
     if (established.count() > 0):
         latest_target_period = established.last().target_period
         predicted = predicted.filter(target_period__gt=latest_target_period)
