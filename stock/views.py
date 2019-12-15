@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.http import Http404
-from .models import Stock, Shikiho, Performance
-from .forms import StockForm, ShikihoForm, PerformanceForm
+from .models import Stock, Shikiho, Performance, Note
+from .forms import StockForm, ShikihoForm, PerformanceForm, NoteForm
 
 
 # Stock
@@ -244,6 +244,75 @@ def performance_all(request, stock_code):
 
     return render(request, 'stock/performance_all.html', {'title': 'Performance History', 'stock_code': stock_code, 'stock': stock, 'performances': performances })
 
+def note_all(request, stock_code):
+    stock = get_object_or_404(Stock, stock_code=stock_code)
+    notes = Note.objects.filter(stock_code=stock_code).order_by('-publish_date')
+
+    if (len(notes) == 0):
+        notes = None
+
+    return render(request, 'stock/note_all.html', {'title': 'Note History', 'stock_code': stock_code, 'stock': stock, 'notes': notes })
+
+
+
+# Note
+#----------------------------------
+def note_new(request, stock_code):
+    if request.method == "POST":
+        form = NoteForm(request.POST)
+        stock_code = request.POST['stock_code']
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.updated_date = timezone.now()
+            stock = Stock.objects.get(stock_code=stock_code)
+            note.stock_code = stock
+            note.save()
+            # save -> info
+            note_id = note.id
+            return redirect('note_info', stock_code=stock_code, note_id=note_id)
+        else:
+            # not_valid -> new
+            return render(request, 'stock/note_edit.html', {'title': 'Register Note', 'stock_code': stock_code, 'form': form, 'is_edit': False})
+    else:
+        form = NoteForm()
+    # new
+    return render(request, 'stock/note_edit.html', {'title': 'Register Note', 'stock_code': stock_code, 'form': form, 'is_edit': False})
+
+def note_info(request, stock_code, note_id):
+    stock = Stock.objects.get(stock_code=stock_code)
+    note = get_object_or_404(Note, id=note_id)
+    return render(request, 'stock/note_info.html', {'title': 'Notes', 'stock': stock, 'note': note})
+
+def note_edit(request, stock_code, note_id):
+    note = get_object_or_404(Note, id=note_id)
+    if request.method == "POST":
+        form = NoteForm(request.POST, instance=note)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.updated_date = timezone.now()
+            stock = Stock.objects.get(stock_code=stock_code)
+            note.stock_code = stock
+            note.save()
+            # save -> info
+            return redirect('note_info', stock_code=stock_code, note_id=note_id)
+        else:
+            # not_valid -> edit
+            return render(request, 'stock/note_edit.html', {'title': 'Update Note', 'stock_code': stock_code, 'note_id': note_id, 'form': form, 'is_edit': True})
+    else:
+        form = NoteForm(instance=note)
+    # edit
+    return render(request, 'stock/note_edit.html', {'title': 'Update Note', 'stock_code': stock_code, 'note_id': note_id, 'form': form, 'is_edit': True})
+
+def note_delete(request, stock_code, note_id):
+    try:
+        note = Note.objects.get(stock_code=stock_code, id=note_id)
+    except Note.DoesNotExist:
+        raise Http404
+    note.delete()
+    return redirect('stock_detail', stock_code=stock_code)
+
+
+
 # functions
 #----------------------------------
 def calc_and_set_performance(performances):
@@ -272,3 +341,4 @@ def calc_and_set_performance(performances):
             previous_period = performance.target_period
 
     return result
+

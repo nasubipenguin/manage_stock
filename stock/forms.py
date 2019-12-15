@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Stock, Performance, Shikiho
+from .models import Stock, Performance, Shikiho, Note
 
 SOURCE_CHOICES = [
     ('0', ''),
@@ -11,6 +11,11 @@ PLUS_MINUS_CHOICES = [
     ('', ''),
     ('True', '+'),
     ('False', '-'),
+]
+TYPE_CHOICES = [
+    ('0', 'メモ'),
+    ('1', '売買記録'),
+    ('2', '分析記録'),
 ]
 
 class StockForm(forms.ModelForm):
@@ -44,3 +49,12 @@ class ShikihoForm(forms.ModelForm):
     class Meta:
         model = Shikiho
         fields = ('pub_year','pub_month','market_capitalization','capital_ratio','roe','roa', 'operating_cf', 'investing_cf', 'financing_cf', 'headline_1', 'headline_2', 'notes', 'updated_date')
+
+class NoteForm(forms.ModelForm):
+    type = forms.fields.ChoiceField(
+        choices=TYPE_CHOICES,
+        widget=forms.widgets.Select,
+    )
+    class Meta:
+        model = Note
+        fields = ('publish_date', 'type', 'notes', 'updated_date')

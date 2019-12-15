@@ -81,3 +81,20 @@ class Shikiho(models.Model):
 
     def __str__(self):
         return str(self.stock_code) + '[' + str(self.pub_year)  + '/' + str(self.pub_month) + ']'
+
+
+# Note
+class Note(models.Model):
+    stock_code = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    publish_date = models.DateTimeField(default=timezone.now)
+    type = models.IntegerField(default=0)
+    notes = models.TextField(blank=True, null=True)
+    created_date = models.DateTimeField(default=timezone.now)
+    updated_date = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.updated_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.stock_code) + '[' + str(self.created_date) + ']'

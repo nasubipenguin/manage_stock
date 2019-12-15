@@ -69,14 +69,14 @@
           <tr>
             <td>{{ performance.is_established|yesno:'○,,' }}</td>
             <td>{{ performance.target_period }}</td>
-              <td>
-                {% if performance.source == 1 %}四
-                {% elif performance.source == 2 %}会
-                {% endif %}
-              </td>
+            <td>
+              {% if performance.source == 1 %}四
+              {% elif performance.source == 2 %}会
+              {% endif %}
+            </td>
             <td>
               <a href="{% url 'performance_info' stock_code=stock_code source=performance.source pub_year=performance.pub_year pub_month=performance.pub_month target_period=performance.target_period %}">
-              {{ performance.get_source_display }} {{ performance.pub_year }}.{{ performance.pub_month }}
+              {{ performance.pub_year }}.{{ performance.pub_month }}
               </a>
             </td>
             <td>
