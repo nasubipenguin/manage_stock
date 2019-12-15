@@ -31,7 +31,7 @@ class PerformanceForm(forms.ModelForm):
 
     class Meta:
         model = Performance
-        fields = ('source','pub_year','pub_month','target_period','is_established','sales_amount', 'operating_income', 'ordinary_income', 'net_income', 'per', 'notes', 'updated_date')
+        fields = ('stock_code', 'source','pub_year','pub_month','target_period','is_established','sales_amount', 'operating_income', 'ordinary_income', 'net_income', 'per', 'notes', 'updated_date')
 
 class ShikihoForm(forms.ModelForm):
     operating_cf = forms.fields.ChoiceField(
@@ -48,7 +48,7 @@ class ShikihoForm(forms.ModelForm):
     )
     class Meta:
         model = Shikiho
-        fields = ('pub_year','pub_month','market_capitalization','capital_ratio','roe','roa', 'operating_cf', 'investing_cf', 'financing_cf', 'headline_1', 'headline_2', 'notes', 'updated_date')
+        fields = ('stock_code', 'pub_year','pub_month','market_capitalization','capital_ratio','roe','roa', 'operating_cf', 'investing_cf', 'financing_cf', 'headline_1', 'headline_2', 'notes', 'updated_date')
 
 class NoteForm(forms.ModelForm):
     type = forms.fields.ChoiceField(
@@ -57,4 +57,4 @@ class NoteForm(forms.ModelForm):
     )
     class Meta:
         model = Note
-        fields = ('publish_date', 'type', 'notes', 'updated_date')
+        fields = ('id', 'stock_code', 'publish_date', 'type', 'notes', 'updated_date')

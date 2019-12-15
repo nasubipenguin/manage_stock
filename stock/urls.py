@@ -21,8 +21,8 @@ urlpatterns = [
     path('<int:stock_code>/shikiho/<int:pub_year>/<int:pub_month>/delete/', views.shikiho_delete, name='shikiho_delete'),
     path('<int:stock_code>/note/new/', views.note_new, name='note_new'),
     path('<int:stock_code>/note/all/', views.note_all, name='note_all'),
-    path('<int:stock_code>/note/<int:note_id>/', views.note_info, name='note_info'),
-    path('<int:stock_code>/note/<int:note_id>/edit/', views.note_edit, name='note_edit'),
-    path('<int:stock_code>/note/<int:note_id>/delete/', views.note_delete,
+    path('<int:stock_code>/note/<int:id>/', views.note_info, name='note_info'),
+    path('<int:stock_code>/note/<int:id>/edit/', views.note_edit, name='note_edit'),
+    path('<int:stock_code>/note/<int:id>/delete/', views.note_delete,
          name='note_delete'),
 ]

@@ -7,31 +7,40 @@
 
 {% block content %}
 <article>
-  <section class="col-md-10 mx-auto">
+  <section>
     <h1>{{title}}</h1>
 
     <div class="text-right small">
-      <p class="d-inline-block"><a href="{% url 'stock_detail' stock_code=stock_code %}">Stock Summary >></a></p>
-      <p class="d-inline-block ml-3"><a href="{% url 'stock_info' stock_code=stock_code %}">Stock Info >></a></p>
+      <p class="d-inline-block"><a href="{% url 'shikiho_new' stock_code=stock.stock_code %}">Register Quarterly >></a></p>
+      <p class="d-inline-block ml-3"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
     </div>
+    <div>
+      <h2><a href="{% url 'stock_info' stock_code=stock.stock_code %}">{{ stock.stock_code }}</a>: {{ stock.stock_name }} </h2>
+      <div>
+        <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
+        <p class="d-inline-block ml-3"><span class="badge badge-secondary mr-1 align-text-bottom">業種</span>{{stock.business_type}}</p>
+        <p class="d-inline-block ml-3 small"><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">NIKKEI</a></p>
+        <p class="d-inline-block ml-3 small">
+          {% if not stock.ir_url is None %}<a href="{{stock.ir_url|default:''}}" target="_blank">IR</a>{% endif %}</p>
+        <p class="d-inline-block ml-3"><span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></p>
+      </div>
+      <p>{{stock.notes}}</p>
+    </div>
+    <hr>
+  </section>
 
+  <section class="col-md-10 mx-auto">
     {% if exists is True %}
     <div class="alert alert-danger" role="alert">
       Shikiho info bellow already exists.<br>
       code:{{ stock_code }} published:{{ form.pub_year.value }}/{{ form.pub_month.value }}<br>
-      Confirm the inputted year/month or <a href="{% url 'shikiho_info' stock_code=stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}">update it from here</a>.
+      Confirm the inputted year/month or <a href="{% url 'shikiho_info' stock_code=stock.stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}">update it from here</a>.
     </div>
     {% endif %}
 
     <div class="mt-4">
       <form method="post">{% csrf_token %}
-        <div class="form-group row">
-          <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
-          <div class="col-sm-9 col-lg-10 form-inline">
-            {{ stock_code }}
-            <input type="hidden" name="stock_code" id="stock_code" value="{{ stock_code }}" />
-          </div>
-        </div>
+        <input type="hidden" name="stock_code" id="stock_code" value="{{ stock.stock_code }}" />
         <div class="form-group row">
           <label for="pub_year" class="col-form-label justify-content-start col-sm-3 col-lg-2">発行年</label>
           <div class="col-sm-9 col-lg-10 form-inline">
@@ -114,7 +123,7 @@
         <div class="clearfix my-5">
           <div class="text-center">
             {% if is_edit == True %}
-            <a href="{% url 'shikiho_info' stock_code=stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}" class="btn btn-secondary">Back</a>
+            <a href="{% url 'shikiho_info' stock_code=stock.stock_code pub_year=form.pub_year.value pub_month=form.pub_month.value %}" class="btn btn-secondary">Back</a>
             {% endif %}
             <button type="submit" class="btn btn-primary">{{ is_edit|yesno:"Update,Register," }}</button>
           </div>

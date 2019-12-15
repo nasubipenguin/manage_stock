@@ -6,64 +6,66 @@
 
 {% block content %}
 <article>
-  <section class="col-md-10 mx-auto">
+  <section>
     <h1>{{title}}</h1>
-
     <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
-    <div class="mt-4">
-      <div class="form-group row">
-        <label for="stock_code" class="justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.stock_code }}
+
+    <div class="col-md-10 mx-auto">
+      <div class="mt-4">
+        <div class="form-group row">
+          <label for="stock_code" class="justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.stock_code }}
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="stock_name" class="justify-content-start col-sm-3 col-lg-2">銘柄名</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.stock_name }}
+        <div class="form-group row">
+          <label for="stock_name" class="justify-content-start col-sm-3 col-lg-2">銘柄名</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.stock_name }}
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="accounting_month" class="justify-content-start col-sm-3 col-lg-2">決算月</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.accounting_month }}月
+        <div class="form-group row">
+          <label for="accounting_month" class="justify-content-start col-sm-3 col-lg-2">決算月</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.accounting_month }}月
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="business_type" class="justify-content-start col-sm-3 col-lg-2">業種</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.business_type }}
+        <div class="form-group row">
+          <label for="business_type" class="justify-content-start col-sm-3 col-lg-2">業種</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.business_type }}
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="ir_url" class="justify-content-start col-sm-3 col-lg-2">IR情報URL</label>
-        <div class="col-sm-9 col-lg-10">
-          <a href="{{ stock.ir_url|default:'' }}" target="_blank">{{ stock.ir_url|default:'' }}</a>
+        <div class="form-group row">
+          <label for="ir_url" class="justify-content-start col-sm-3 col-lg-2">IR情報URL</label>
+          <div class="col-sm-9 col-lg-10">
+            <a href="{{ stock.ir_url|default:'' }}" target="_blank">{{ stock.ir_url|default:'' }}</a>
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="notes" class="justify-content-start col-sm-3 col-lg-2">備考</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.notes }}
+        <div class="form-group row">
+          <label for="notes" class="justify-content-start col-sm-3 col-lg-2">備考</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.notes }}
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="watch_flag" class="justify-content-start col-sm-3 col-lg-2">Watching</label>
-        <div class="col-sm-9 col-lg-10">
-          {{ stock.watch_flag|yesno:"○,ー,ー" }}
+        <div class="form-group row">
+          <label for="watch_flag" class="justify-content-start col-sm-3 col-lg-2">Watching</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ stock.watch_flag|yesno:"○,ー,ー" }}
+          </div>
         </div>
-      </div>
-      <div>
-        <p class="text-right small">Updated: {{ stock.updated_date }}</p>
-      </div>
-      <div class="text-center my-5">
-        <div class="">
-          <a href="{% url 'stock_edit' stock_code=stock.stock_code %}" class="btn btn-primary">Edit</a>
+        <div>
+          <p class="text-right small">Updated: {{ stock.updated_date }}</p>
         </div>
-      </div>
-      <div class="text-right my-5">
-        <div class="">
-          <a href="{% url 'stock_delete' stock_code=stock.stock_code %}" class="text-danger">Delete</a>
+        <div class="text-center my-5">
+          <div class="">
+            <a href="{% url 'stock_edit' stock_code=stock.stock_code %}" class="btn btn-primary">Edit</a>
+          </div>
+        </div>
+        <div class="text-right my-5">
+          <div class="">
+            <a href="{% url 'stock_delete' stock_code=stock.stock_code %}" class="text-danger">Delete</a>
+          </div>
         </div>
       </div>
     </div>
