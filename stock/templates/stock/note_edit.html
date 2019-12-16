@@ -1,0 +1,68 @@
+{% extends 'stock/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+<article>
+  <section>
+    <h1>{{title}}</h1>
+
+    <div class="text-right small">
+      <p class="d-inline-block"><a href="{% url 'note_new' stock_code=stock.stock_code %}">Register Note >></a></p>
+      <p class="d-inline-block ml-3"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
+    </div>
+    <div>
+      <h2><a href="{% url 'stock_info' stock_code=stock.stock_code %}">{{ stock.stock_code }}</a>: {{ stock.stock_name }} </h2>
+      <div>
+        <p class="d-inline-block"><span class="badge badge-secondary mr-1 align-text-bottom">決算月</span>{{stock.accounting_month}}月</p>
+        <p class="d-inline-block ml-3"><span class="badge badge-secondary mr-1 align-text-bottom">業種</span>{{stock.business_type}}</p>
+        <p class="d-inline-block ml-3 small"><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank">NIKKEI</a></p>
+        <p class="d-inline-block ml-3 small">
+          {% if not stock.ir_url is None %}<a href="{{stock.ir_url|default:''}}" target="_blank">IR</a>{% endif %}</p>
+        <p class="d-inline-block ml-3"><span class="badge badge-info">{{stock.watch_flag|yesno:"WATCHING,,"}}</span></p>
+      </div>
+      <p>{{stock.notes}}</p>
+    </div>
+    <hr>
+  </section>
+
+  <section class="col-md-10 mx-auto">
+    <div class="mt-4">
+      <form method="post">{% csrf_token %}
+        <input type="hidden" name="stock_code" id="stock_code" value="{{ stock.stock_code }}" />
+        <input type="hidden" name="id" id="id" value="{{ form.id.value }}" />
+        <div class="form-group row">
+          <label for="type" class="col-form-label justify-content-start col-sm-3 col-lg-2">日時</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.publish_date|add_class:"form-control" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-form-label justify-content-start col-sm-3 col-lg-2">メモ種別</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.type|add_class:"form-control" }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="notes" class="col-form-label justify-content-start col-sm-3 col-lg-2">メモ</label>
+          <div class="col-sm-9 col-lg-10">
+            {{ form.notes|add_class:"form-control" }}
+          </div>
+        </div>
+
+        <div class="clearfix my-5">
+          <div class="text-center">
+            {% if is_edit == True %}
+            <a href="{% url 'note_info' stock_code=stock.stock_code id=id %}" class="btn btn-secondary">Back</a>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">{{ is_edit|yesno:"Update,Register," }}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</article>
+{% endblock %}

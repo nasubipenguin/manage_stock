@@ -1,0 +1,89 @@
+{% extends 'stock/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+{% endblock %}
+
+{% block content %}
+{% with form.stock_code.value as stock_code %}
+<article>
+  <section>
+    <h1>{{title}}</h1>
+    {% if is_edit == True %}
+    <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock_code %}">Stock Summary >></a></p>
+    {% endif %}
+
+    <div class="col-md-10 mx-auto">
+      {% if exists is True %}
+      <div class="alert alert-danger" role="alert">
+        Stock code {{ stock_code }} already exists.<br>
+        Confirm the inputted code or <a href="{% url 'stock_info' stock_code=stock_code %}">update it from here</a>.
+      </div>
+      {% endif %}
+
+      <div class="mt-4">
+        <form method="post">{% csrf_token %}
+          <div class="form-group row">
+            <label for="stock_code" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄コード</label>
+            <div class="col-sm-9 col-lg-10 form-inline">
+              {{ form.stock_code|add_class:"w-25 form-control" }}
+              {% if is_edit == True %}
+              <input type="hidden" name="stock_code" id="stock_code" value="{{stock_code}}" >
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="stock_name" class="col-form-label justify-content-start col-sm-3 col-lg-2">銘柄名</label>
+            <div class="col-sm-9 col-lg-10">
+              {{ form.stock_name|add_class:"form-control" }}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="accounting_month" class="col-form-label justify-content-start col-sm-3 col-lg-2">決算月</label>
+            <div class="col-sm-9 col-lg-10 form-inline">
+              {{ form.accounting_month|add_class:"w-25 form-control" }}<span class="ml-2">月</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="business_type" class="col-form-label justify-content-start col-sm-3 col-lg-2">業種</label>
+            <div class="col-sm-9 col-lg-10">
+              {{ form.business_type|add_class:"form-control" }}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ir_url" class="col-form-label justify-content-start col-sm-3 col-lg-2">IR情報URL</label>
+            <div class="col-sm-9 col-lg-10">
+              {{ form.ir_url|add_class:"form-control" }}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="notes" class="col-form-label justify-content-start col-sm-3 col-lg-2">備考</label>
+            <div class="col-sm-9 col-lg-10">
+              {{ form.notes|add_class:"form-control" }}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="watch_flag" class="col-form-label justify-content-start col-sm-3 col-lg-2">Watching</label>
+            <div class="col-sm-9 col-lg-10">
+              {{ form.watch_flag|add_class:"w-25 form-control" }}
+            </div>
+          </div>
+
+          <div class="clearfix my-5">
+            <div class="text-center">
+              {% if is_edit == True %}
+              <a href="{% url 'stock_info' stock_code=stock_code %}" class="btn btn-secondary">Back</a>
+              <button type="submit" class="btn btn-primary">Update</button>
+              {% else %}
+              <button type="submit" class="btn btn-primary">Register</button>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</article>
+{% endwith %}
+{% endblock %}
