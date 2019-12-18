@@ -8,7 +8,7 @@
             <td class="text-center">{{ stock.accounting_month }}月</td>
             <td>
               {% if stock.latest_notes != '' %}
-              {{ stock.latest_notes }}（<a href="{% url 'note_info' stock_code=stock.stock_code id=stock.latest_notes_id %}">{{ stock.latest_notes_date|date:"m/d" }}</a>）
+              {{ stock.latest_notes }}（{{ stock.latest_notes_date|date:"m/d" }}）
               {% endif %}
               <br><a class="small" href="{% url 'note_all' stock_code=stock.stock_code %}">Notes</a>
               &nbsp;<a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a>
