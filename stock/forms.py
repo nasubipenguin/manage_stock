@@ -2,6 +2,11 @@ from django import forms
 
 from .models import Stock, Performance, Shikiho, Note
 
+WATCH_CHOICES = [
+    ('0', 'ー'),
+    ('1', 'WATCHING'),
+    ('2', 'CONSIDERING'),
+]
 SOURCE_CHOICES = [
     ('0', ''),
     ('1', '四季報'),
@@ -19,6 +24,10 @@ TYPE_CHOICES = [
 ]
 
 class StockForm(forms.ModelForm):
+    watch_flag = forms.fields.ChoiceField(
+        choices=WATCH_CHOICES,
+        widget=forms.widgets.Select,
+    )
     class Meta:
         model = Stock
         fields = ('stock_code','stock_name','accounting_month','business_type','ir_url','watch_flag','notes', 'updated_date')

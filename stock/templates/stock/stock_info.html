@@ -49,9 +49,12 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="watch_flag" class="justify-content-start col-sm-3 col-lg-2">Watching</label>
+          <label for="watch_flag" class="justify-content-start col-sm-3 col-lg-2">検討状況</label>
           <div class="col-sm-9 col-lg-10">
-            {{ stock.watch_flag|yesno:"○,ー,ー" }}
+            {% if stock.watch_flag == 1 %}WATCHING
+            {% elif stock.watch_flag == 2 %}CONSIDERING
+            {% else %}ー
+            {% endif %}
           </div>
         </div>
         <div>

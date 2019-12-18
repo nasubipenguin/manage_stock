@@ -10,7 +10,7 @@ class Stock(models.Model):
     accounting_month = models.IntegerField()
     business_type = models.CharField(max_length=20)
     ir_url = models.URLField(blank=True, null=True)
-    watch_flag = models.BooleanField(default=False)
+    watch_flag = models.IntegerField(default=0)
     notes = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
