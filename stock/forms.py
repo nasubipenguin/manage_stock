@@ -57,4 +57,4 @@ class NoteForm(forms.ModelForm):
     )
     class Meta:
         model = Note
-        fields = ('id', 'stock_code', 'publish_date', 'type', 'notes', 'updated_date')
+        fields = ('id', 'stock_code', 'publish_date', 'type', 'summary', 'notes', 'stock_price', 'latest_high_price', 'latest_low_price', 'high_limit', 'low_limit', 'buy_price', 'profit_price', 'loss_cut_price', 'rr_rate', 'updated_date')

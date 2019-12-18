@@ -26,8 +26,8 @@ def stock_list(request):
         latest_notes = ''
         latest_notes_date = ''
         note = Note.objects.filter(stock_code=stock.stock_code).order_by('-publish_date').first()
-        if( note != None ):
-            latest_notes = note.notes
+        if( note != None and note.summary != None ):
+            latest_notes = note.summary
             latest_notes_date = note.publish_date
         new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes':latest_notes, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
         if( stock.watch_flag == True):
