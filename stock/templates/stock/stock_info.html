@@ -8,7 +8,9 @@
 <article>
   <section>
     <h1>{{title}}</h1>
-    <p class="text-right small"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
+    {% with stock.stock_code as stock_code %}
+    {% include 'stock/inc/header_nav.html' %}
+    {% endwith %}
 
     <div class="col-md-10 mx-auto">
       <div class="mt-4">

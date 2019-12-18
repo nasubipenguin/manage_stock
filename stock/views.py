@@ -26,11 +26,13 @@ def stock_list(request):
     for stock in stocks:
         latest_notes = ''
         latest_notes_date = ''
+        latest_notes_id = ''
         note = Note.objects.filter(stock_code=stock.stock_code).order_by('-publish_date').first()
         if( note != None and note.summary != None ):
             latest_notes = note.summary
             latest_notes_date = note.publish_date
-        new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes':latest_notes, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
+            latest_notes_id = note.id
+        new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes':latest_notes, 'latest_notes_date':latest_notes_date, 'latest_notes_id':latest_notes_id,'watch_flag':stock.watch_flag}
         if( stock.watch_flag == 1):
             watching.append(new_stock)
         elif( stock.watch_flag == 2):

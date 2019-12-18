@@ -7,10 +7,9 @@
   <section>
     <h1>{{title}}</h1>
 
-    <div class="text-right small">
-      <p class="d-inline-block"><a href="{% url 'performance_new' stock_code=stock.stock_code %}">Register Performance >></a></p>
-      <p class="d-inline-block ml-3"><a href="{% url 'stock_detail' stock_code=stock.stock_code %}">Stock Summary >></a></p>
-    </div>
+    {% with stock.stock_code as stock_code %}
+    {% include 'stock/inc/header_nav_performance.html' %}
+    {% endwith %}
     <div>
       {% include 'stock/inc/stock_header.html' %}
   </section>
