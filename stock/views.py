@@ -21,21 +21,24 @@ def stock_list(request):
     stocks = stocks.order_by('accounting_month', 'stock_code')
 
     watching = []
+    considering = []
     unwatching = []
     for stock in stocks:
         latest_notes = ''
         latest_notes_date = ''
         note = Note.objects.filter(stock_code=stock.stock_code).order_by('-publish_date').first()
-        if( note != None ):
-            latest_notes = note.notes
+        if( note != None and note.summary != None ):
+            latest_notes = note.summary
             latest_notes_date = note.publish_date
         new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes':latest_notes, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
-        if( stock.watch_flag == True):
+        if( stock.watch_flag == 1):
             watching.append(new_stock)
+        elif( stock.watch_flag == 2):
+            considering.append(new_stock)
         else:
             unwatching.append(new_stock)
 
-    return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'watching': watching, 'unwatching': unwatching})
+    return render(request, 'stock/stock_list.html', {'title': 'Stock List', 'watching': watching, 'considering': considering, 'unwatching': unwatching})
 
 
 # Stock
