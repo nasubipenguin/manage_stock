@@ -39,7 +39,7 @@
               {% else %}メモ
               {% endif %}
             </td>
-            <td>{{ note_latest.notes }}</td>
+            <td>{{ note_latest.summary|default:'' }}</td>
           </tr>
         </tbody>
       </table>
