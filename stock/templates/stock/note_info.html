@@ -48,55 +48,91 @@
       <div class="form-group row">
         <label for="stock_price" class="justify-content-start col-sm-3 col-lg-2">株価</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.stock_price|default:'' |intcomma }}
+          {% if note.stock_price is None %}
+          -
+          {% else %}
+          {{ note.stock_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="latest_high_price" class="justify-content-start col-sm-3 col-lg-2">直近高値</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.latest_high_price|default:'' |intcomma }}
+          {% if note.latest_high_price is None %}
+          -
+          {% else %}
+          {{ note.latest_high_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="latest_low_price" class="justify-content-start col-sm-3 col-lg-2">直近安値</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.latest_low_price|default:'' |intcomma }}
+          {% if note.latest_low_price is None %}
+          -
+          {% else %}
+          {{ note.latest_low_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="high_limit" class="justify-content-start col-sm-3 col-lg-2">壁</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.high_limit|default:'' |intcomma }}
+          {% if note.high_limit is None %}
+          -
+          {% else %}
+          {{ note.high_limit|default:'' }}
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="low_limit" class="justify-content-start col-sm-3 col-lg-2">押し目</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.low_limit|default:'' |intcomma }}
+          {% if note.low_limit is None %}
+          -
+          {% else %}
+          {{ note.low_limit|default:'' }}
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="buy_price" class="justify-content-start col-sm-3 col-lg-2">購入価格</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.buy_price|default:'' |intcomma }}
+          {% if note.buy_price is None %}
+          -
+          {% else %}
+          {{ note.buy_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="profit_price" class="justify-content-start col-sm-3 col-lg-2">利確価格</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.profit_price|default:'' |intcomma }}
+          {% if note.profit_price is None %}
+          -
+          {% else %}
+          {{ note.profit_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="loss_cut_price" class="justify-content-start col-sm-3 col-lg-2">損切価格</label>
         <div class="col-sm-9 col-lg-10">
-          {{ note.loss_cut_price|default:'' |intcomma }}
+          {% if note.loss_cut_price is None %}
+          -
+          {% else %}
+          {{ note.loss_cut_price|default:'' |intcomma }}円
+          {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="rr_rate" class="justify-content-start col-sm-3 col-lg-2">RR比率</label>
         <div class="col-sm-9 col-lg-10">
+          {% if note.rr_rate is None %}
+          -
+          {% else %}
           {{ note.rr_rate|default:'' |default:'' |intcomma }}
+          {% endif %}
         </div>
       </div>
       <p class="text-right small">Updated: {{ note.updated_date }}</p>
