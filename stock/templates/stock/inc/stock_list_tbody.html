@@ -1,17 +1,23 @@
           <tr>
-            <th class="text-center">{{ forloop.counter }}</th>
+            <th class="text-center" rowspan="2">{{ forloop.counter }}</th>
             <td class="text-center">
-              <a href="{% url 'stock_info' stock_code=stock.stock_code %}">{{ stock.stock_code }}</a>
+              {{ stock.stock_code }}
               <br><a class="small" href="{% url 'stock_detail' stock_code=stock.stock_code %}">Summary</a>
             </td>
-            <td>{{ stock.stock_name }}</td>
-            <td class="text-center">{{ stock.accounting_month }}月</td>
             <td>
-              {% if stock.latest_notes != '' %}
-              {{ stock.latest_notes }}（{{ stock.latest_notes_date|date:"m/d" }}）
-              {% endif %}
-              <br><a class="small" href="{% url 'note_all' stock_code=stock.stock_code %}">Notes</a>
-              &nbsp;<a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a>
+              {{ stock.stock_name }}
+              <br><a href="https://www.nikkei.com/nkd/company/?scode={{stock.stock_code}}" target="_blank" class="small">NIKKEI</a>
               &nbsp;<a href="https://www.nikkei.com/smartchart/?code={{stock.stock_code}}" target="_blank" class="small">Chart</a>
+            </td>
+            <td class="text-center">{{ stock.accounting_month }}月</td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <a class="small" href="{% url 'note_all' stock_code=stock.stock_code %}">Notes</a>
+              {% if stock.latest_notes_date != '' %}
+                （{{ stock.latest_notes_date|date:"m/d" }}）
+                {% if stock.stock_price != '' %}&nbsp;株価：{{ stock.stock_price }}円 {% endif %}
+                {% if stock.latest_notes != '' %}<br>{{ stock.latest_notes }}  {% endif %}
+              {% endif %}
             </td>
           </tr>
