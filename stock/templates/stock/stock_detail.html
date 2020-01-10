@@ -19,32 +19,8 @@
     <section>
     <h2>Note</h2>
     <div class="mt-4 table-responsive-md">
-    {% if note_latest is Null %}
-      <p>Nothing is registered.</p>
-    {% else %}
-      <table class="table table-striped table-bordered">
-        <thead class="small text-center">
-          <tr>
-            <th width="25%" scope="col">日時</th>
-            <th width="20%" scope="col">メモ種別</th>
-            <th width="55%" scope="col">備考	</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="{% url 'note_info' stock_code=stock.stock_code id=note_latest.id %}">{{ note_latest.publish_date}}</a></td>
-            <td>
-              {% if note_latest.type == 1 %}売買記録
-              {% elif note_latest.type == 2 %}分析記録
-              {% else %}メモ
-              {% endif %}
-            </td>
-            <td>{{ note_latest.summary|default:'' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      {% include 'stock/inc/note_list_table.html' %}
       <p class="text-right small"><a href="{% url 'note_all' stock_code=stock.stock_code %}">Note History >></a></p>
-    {% endif %}
     </div>
 
     <h2>Quarterly</h2>

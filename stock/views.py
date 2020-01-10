@@ -324,6 +324,10 @@ def note_all(request, stock_code):
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     note_latest = Note.objects.filter(stock_code=stock_code).order_by('-publish_date').first()
+    if (note_latest is None ):
+        notes = None
+    else:
+        notes = [note_latest]
     shikiho_latest = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month').first()
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
@@ -337,7 +341,7 @@ def stock_detail(request, stock_code):
     if( len(performance_latest) == 0 ):
         performance_latest = None
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Summary', 'stock_code': stock_code, 'stock': stock, 'note_latest': note_latest, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Summary', 'stock_code': stock_code, 'stock': stock, 'notes': notes, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
 
 
 # functions
