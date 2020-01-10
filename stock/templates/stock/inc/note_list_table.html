@@ -21,8 +21,8 @@
             </td>
             <td>
               {% if note.publish_date != '' %}
-                {% if note.stock_price != '' %}&nbsp;株価：{{ note.stock_price|intcomma }}円 {% endif %}
-                {% if note.summary != '' %}<br>{{ note.summary|default:'' }}  {% endif %}
+                {% if note.stock_price is not None and note.stock_price != '' %}&nbsp;株価：{{ note.stock_price|default:''|intcomma }}円 <br>{% endif %}
+                {% if note.summary != '' %}{{ note.summary|default:'' }}  {% endif %}
               {% endif %}
             </td>
           </tr>
