@@ -1,0 +1,59 @@
+{% load humanize %}
+    {% if shikihos is Null %}
+      <p>Nothing is registered.</p>
+    {% else %}
+      <table class="table table-striped table-bordered">
+        <thead class="small text-center">
+          <tr>
+            <th scope="col" rowspan="2">発行年月</th>
+            <th scope="col">自己資本比率<br>40%以上</th>
+            <th scope="col">ROE<br>10%以上</th>
+            <th scope="col">ROA<br>5%以上</th>
+            <th scope="col">営業CF<br>+</th>
+            <th scope="col">投資CF<br>-</th>
+            <th scope="col">財務CF<br>-</th>
+            <th scope="col">時価総額（億）<br>500未満</th>
+            <th scope="col">株主価値（億）</th>
+          </tr>
+          <tr>
+            <th scope="col" colspan="2">見出し1</th>
+            <th scope="col" colspan="2">見出し2</th>
+            <th scope="col" colspan="4">備考	</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for shikiho in shikihos %}
+          <tr>
+            <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock.stock_code pub_year=shikiho.pub_year pub_month=shikiho.pub_month  %}">{{ shikiho.pub_year }}/{{ shikiho.pub_month }}</a></td>
+            <td class="text-right">
+              <span{% if shikiho.capital_ratio < 40 %} class="text-danger"{% endif %}>{{ shikiho.capital_ratio }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.roe < 10 %} class="text-danger"{% endif %}>{{ shikiho.roe }}%</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.roa < 5 %} class="text-danger"{% endif %}>{{ shikiho.roa }}%</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.operating_cf == False %} class="text-danger"{% endif %}>{{ shikiho.operating_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.investing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.investing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-center">
+              <span{% if shikiho.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.financing_cf|yesno:"+,-," }}</span>
+            </td>
+            <td class="text-right">
+              <span{% if shikiho.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho.market_capitalization|intcomma }}億円</span>
+            </td>
+            <td class="text-right"></td>
+          </tr>
+          <tr>
+            <td colspan="2">{{ shikiho.headline_1|default:"" }}</td>
+            <td colspan="2">{{ shikiho.headline_2|default:"" }}</td>
+            <td colspan="4">{{ shikiho.notes }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
