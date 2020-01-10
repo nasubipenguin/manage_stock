@@ -22,7 +22,7 @@
         <input type="hidden" name="stock_code" id="stock_code" value="{{ stock.stock_code }}" />
         <input type="hidden" name="id" id="id" value="{{ form.id.value }}" />
         <div class="form-group row">
-          <label for="type" class="col-form-label justify-content-start col-sm-3 col-lg-2">日時</label>
+          <label for="publish_date" class="col-form-label justify-content-start col-sm-3 col-lg-2">日時</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ form.publish_date|add_class:"form-control" }}
           </div>
@@ -64,27 +64,9 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="high_limit" class="col-form-label justify-content-start col-sm-3 col-lg-2">壁</label>
-          <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.high_limit|add_class:"w-50 form-control" }}
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="low_limit" class="col-form-label justify-content-start col-sm-3 col-lg-2">押し目</label>
-          <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.low_limit|add_class:"w-50 form-control" }}
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="buy_price" class="col-form-label justify-content-start col-sm-3 col-lg-2">購入価格</label>
+          <label for="buy_price" class="col-form-label justify-content-start col-sm-3 col-lg-2">購入単価</label>
           <div class="col-sm-9 col-lg-10 form-inline">
             {{ form.buy_price|add_class:"w-25 form-control" }}<span class="ml-2">円</span>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="profit_price" class="col-form-label justify-content-start col-sm-3 col-lg-2">利確価格</label>
-          <div class="col-sm-9 col-lg-10 form-inline">
-            {{ form.profit_price|add_class:"w-25 form-control" }}<span class="ml-2">円</span>
           </div>
         </div>
         <div class="form-group row">
@@ -94,9 +76,15 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="rr_rate" class="col-form-label justify-content-start col-sm-3 col-lg-2">RR比率</label>
-          <div class="col-sm-9 col-lg-10">
-            {{ form.rr_rate|add_class:"w-25 form-control" }}
+          <label for="profit_price" class="col-form-label justify-content-start col-sm-3 col-lg-2">利確価格</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.profit_price|add_class:"w-25 form-control" }}<span class="ml-2">円</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="buy_amount" class="col-form-label justify-content-start col-sm-3 col-lg-2">購入株数</label>
+          <div class="col-sm-9 col-lg-10 form-inline">
+            {{ form.buy_amount|add_class:"w-25 form-control" }}<span class="ml-2">株</span>
           </div>
         </div>
 

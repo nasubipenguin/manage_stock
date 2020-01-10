@@ -1,3 +1,4 @@
+{% load humanize %}
           <tr>
             <th class="text-center" rowspan="2">{{ forloop.counter }}</th>
             <td class="text-center">
@@ -16,7 +17,7 @@
               <a class="small" href="{% url 'note_all' stock_code=stock.stock_code %}">Notes</a>
               {% if stock.latest_notes_date != '' %}
                 （{{ stock.latest_notes_date|date:"m/d" }}）
-                {% if stock.stock_price != '' %}&nbsp;株価：{{ stock.stock_price }}円 {% endif %}
+                {% if stock.stock_price != '' %}&nbsp;株価：{{ stock.stock_price|intcomma }}円 {% endif %}
                 {% if stock.latest_notes != '' %}<br>{{ stock.latest_notes }}  {% endif %}
               {% endif %}
             </td>

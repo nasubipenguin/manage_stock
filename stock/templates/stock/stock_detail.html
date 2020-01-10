@@ -19,93 +19,14 @@
     <section>
     <h2>Note</h2>
     <div class="mt-4 table-responsive-md">
-    {% if note_latest is Null %}
-      <p>Nothing is registered.</p>
-    {% else %}
-      <table class="table table-striped table-bordered">
-        <thead class="small text-center">
-          <tr>
-            <th width="25%" scope="col">日時</th>
-            <th width="20%" scope="col">メモ種別</th>
-            <th width="55%" scope="col">備考	</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="{% url 'note_info' stock_code=stock.stock_code id=note_latest.id %}">{{ note_latest.publish_date}}</a></td>
-            <td>
-              {% if note_latest.type == 1 %}売買記録
-              {% elif note_latest.type == 2 %}分析記録
-              {% else %}メモ
-              {% endif %}
-            </td>
-            <td>{{ note_latest.summary|default:'' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      {% include 'stock/inc/note_list_table.html' %}
       <p class="text-right small"><a href="{% url 'note_all' stock_code=stock.stock_code %}">Note History >></a></p>
-    {% endif %}
     </div>
 
     <h2>Quarterly</h2>
     <div class="mt-4 table-responsive-md">
-    {% if shikiho_latest is Null %}
-      <p>Nothing is registered.</p>
-    {% else %}
-      <table class="table table-striped table-bordered">
-        <thead class="small text-center">
-          <tr>
-            <th scope="col" rowspan="2">発行年月</th>
-            <th scope="col">自己資本比率<br>40%以上</th>
-            <th scope="col">ROE<br>10%以上</th>
-            <th scope="col">ROA<br>5%以上</th>
-            <th scope="col">営業CF<br>+</th>
-            <th scope="col">投資CF<br>-</th>
-            <th scope="col">財務CF<br>-</th>
-            <th scope="col">時価総額（億）<br>500未満</th>
-            <th scope="col">株主価値（億）</th>
-          </tr>
-          <tr>
-            <th scope="col" colspan="2">見出し1</th>
-            <th scope="col" colspan="2">見出し2</th>
-            <th scope="col" colspan="4">備考	</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td rowspan="2"><a href="{% url 'shikiho_info' stock_code=stock_code pub_year=shikiho_latest.pub_year pub_month=shikiho_latest.pub_month  %}">{{ shikiho_latest.pub_year }}/{{ shikiho_latest.pub_month }}</a></td>
-            <td class="text-right">
-              <span{% if shikiho_latest.capital_ratio < 40 %} class="text-danger"{% endif %}>{{ shikiho_latest.capital_ratio }}%</span>
-            </td>
-            <td class="text-right">
-              <span{% if shikiho_latest.roe < 10 %} class="text-danger"{% endif %}>{{ shikiho_latest.roe }}%</span>
-            </td>
-            <td class="text-right">
-              <span{% if shikiho_latest.roa < 5 %} class="text-danger"{% endif %}>{{ shikiho_latest.roa }}%</span>
-            </td>
-            <td class="text-center">
-              <span{% if shikiho_latest.operating_cf == False %} class="text-danger"{% endif %}>{{ shikiho_latest.operating_cf|yesno:"+,-," }}</span>
-            </td>
-            <td class="text-center">
-              <span{% if shikiho_latest.investing_cf == True %} class="text-danger"{% endif %}>{{ shikiho_latest.investing_cf|yesno:"+,-," }}</span>
-            </td>
-            <td class="text-center">
-              <span{% if shikiho_latest.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho_latest.financing_cf|yesno:"+,-," }}</span>
-            </td>
-            <td class="text-right">
-              <span{% if shikiho_latest.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho_latest.market_capitalization|intcomma }}</span>
-            </td>
-            <td class="text-right"></td>
-          </tr>
-          <tr>
-            <td colspan="2">{{ shikiho_latest.headline_1|default:"" }}</td>
-            <td colspan="2">{{ shikiho_latest.headline_2|default:"" }}</td>
-            <td colspan="4">{{ shikiho_latest.notes }}</td>
-          </tr>
-        </tbody>
-      </table>
+      {% include 'stock/inc/shikiho_list_table.html' %}
       <p class="text-right small"><a href="{% url 'shikiho_all' stock_code=stock.stock_code %}">Quarterly History >></a></p>
-    {% endif %}
     </div>
 
     <h2>Performance</h2>
@@ -203,8 +124,8 @@
         {% endfor %}
         </tbody>
       </table>
-      <p class="text-right small"><a href="{% url 'performance_all' stock_code=stock.stock_code %}">Performance History >></a></p>
     {% endif %}
+      <p class="text-right small"><a href="{% url 'performance_all' stock_code=stock.stock_code %}">Performance History >></a></p>
     </div>
   </section>
 </article>

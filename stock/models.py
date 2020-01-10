@@ -93,12 +93,10 @@ class Note(models.Model):
     stock_price = models.IntegerField(blank=True, null=True)
     latest_high_price = models.IntegerField(blank=True, null=True)
     latest_low_price = models.IntegerField(blank=True, null=True)
-    high_limit = models.CharField(max_length=255, blank=True, null=True)
-    low_limit = models.CharField(max_length=255, blank=True, null=True)
     buy_price = models.IntegerField(blank=True, null=True)
     profit_price = models.IntegerField(blank=True, null=True)
     loss_cut_price = models.IntegerField(blank=True, null=True)
-    rr_rate = models.CharField(max_length=255, blank=True, null=True)
+    buy_amount = models.IntegerField(blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
 

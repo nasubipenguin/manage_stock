@@ -1,4 +1,5 @@
 {% extends 'stock/base.html' %}
+{% load django_template_maths %}
 {% load humanize %}
 
 {% block breadcrumb %}
@@ -19,7 +20,7 @@
   <section class="col-md-10 mx-auto">
     <div>
       <div class="form-group row">
-        <label for="type" class="justify-content-start col-sm-3 col-lg-2">日時</label>
+        <label for="publish_date" class="justify-content-start col-sm-3 col-lg-2">日時</label>
         <div class="col-sm-9 col-lg-10">
           {{ note.publish_date }}
         </div>
@@ -75,28 +76,9 @@
           {% endif %}
         </div>
       </div>
+      {% with profit_range=note.profit_price|sub:note.buy_price loss_cut_range=note.buy_price|sub:note.loss_cut_price %}
       <div class="form-group row">
-        <label for="high_limit" class="justify-content-start col-sm-3 col-lg-2">壁</label>
-        <div class="col-sm-9 col-lg-10">
-          {% if note.high_limit is None %}
-          -
-          {% else %}
-          {{ note.high_limit|default:'' }}
-          {% endif %}
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="low_limit" class="justify-content-start col-sm-3 col-lg-2">押し目</label>
-        <div class="col-sm-9 col-lg-10">
-          {% if note.low_limit is None %}
-          -
-          {% else %}
-          {{ note.low_limit|default:'' }}
-          {% endif %}
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="buy_price" class="justify-content-start col-sm-3 col-lg-2">購入価格</label>
+        <label for="buy_price" class="justify-content-start col-sm-3 col-lg-2">購入単価</label>
         <div class="col-sm-9 col-lg-10">
           {% if note.buy_price is None %}
           -
@@ -106,35 +88,61 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="profit_price" class="justify-content-start col-sm-3 col-lg-2">利確価格</label>
-        <div class="col-sm-9 col-lg-10">
-          {% if note.profit_price is None %}
-          -
-          {% else %}
-          {{ note.profit_price|default:'' |intcomma }}円
-          {% endif %}
-        </div>
-      </div>
-      <div class="form-group row">
         <label for="loss_cut_price" class="justify-content-start col-sm-3 col-lg-2">損切価格</label>
         <div class="col-sm-9 col-lg-10">
           {% if note.loss_cut_price is None %}
           -
           {% else %}
-          {{ note.loss_cut_price|default:'' |intcomma }}円
+          {{ note.loss_cut_price|default:''|intcomma }}円（損切幅：{{ loss_cut_range|intcomma }}円）
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="profit_price" class="justify-content-start col-sm-3 col-lg-2">利確価格</label>
+        <div class="col-sm-9 col-lg-10">
+          {% if note.profit_price is None %}
+          -
+          {% else %}
+          {{ note.profit_price|default:''|intcomma }}円（利益幅：{{ profit_range }}円）
           {% endif %}
         </div>
       </div>
       <div class="form-group row">
         <label for="rr_rate" class="justify-content-start col-sm-3 col-lg-2">RR比率</label>
         <div class="col-sm-9 col-lg-10">
-          {% if note.rr_rate is None %}
+          {% if note.buy_price is None or note.profit_price is None or note.loss_cut_price is None  %}
           -
           {% else %}
-          {{ note.rr_rate|default:'' |default:'' |intcomma }}
+          1:{{ profit_range|div:loss_cut_range|floatformat }}
           {% endif %}
         </div>
       </div>
+      <div class="form-group row">
+        <label for="buy_amount" class="justify-content-start col-sm-3 col-lg-2">購入株数</label>
+        <div class="col-sm-9 col-lg-10">
+          {% if note.buy_amount is None %}
+          -
+          {% else %}
+          {{ note.buy_amount|default:''|intcomma }}株
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="buy_amount" class="justify-content-start col-sm-3 col-lg-2">購入価格</label>
+        <div class="col-sm-9 col-lg-10">
+          {% if note.buy_amount is None %}
+          -
+          {% else %}
+            {% if note.buy_price != 0 and note.buy_amount != 0  %}
+            {{ note.buy_price|mul:note.buy_amount|intcomma }}円
+            {% endif %}
+            {% if loss_cut_range != 0 and note.buy_amount != 0  %}
+            （損失予定額：{{ loss_cut_range|mul:note.buy_amount|intcomma }}円）
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      {% endwith %}
       <p class="text-right small">Updated: {{ note.updated_date }}</p>
     </div>
     <div class="text-center my-5">

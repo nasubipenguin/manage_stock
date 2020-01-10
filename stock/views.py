@@ -324,7 +324,15 @@ def note_all(request, stock_code):
 def stock_detail(request, stock_code):
     stock = get_object_or_404(Stock, stock_code=stock_code)
     note_latest = Note.objects.filter(stock_code=stock_code).order_by('-publish_date').first()
+    if (note_latest is None ):
+        notes = None
+    else:
+        notes = [note_latest]
     shikiho_latest = Shikiho.objects.filter(stock_code=stock_code).order_by('-pub_year', '-pub_month').first()
+    if (shikiho_latest is None ):
+        shikihos = None
+    else:
+        shikihos = [shikiho_latest]
 
     established = Performance.objects.filter(stock_code=stock_code, is_established=True).order_by('target_period')
     predicted = Performance.objects.filter(stock_code=stock_code).order_by('target_period', '-pub_year', '-pub_month', '-source')
@@ -334,10 +342,8 @@ def stock_detail(request, stock_code):
 
     performances_all = established | predicted
     performance_latest = calc_and_set_performance(performances_all)
-    if( len(performance_latest) == 0 ):
-        performance_latest = None
 
-    return render(request, 'stock/stock_detail.html', {'title': 'Stock Summary', 'stock_code': stock_code, 'stock': stock, 'note_latest': note_latest, 'shikiho_latest': shikiho_latest, 'performance_latest': performance_latest })
+    return render(request, 'stock/stock_detail.html', {'title': 'Stock Summary', 'stock_code': stock_code, 'stock': stock, 'notes': notes, 'shikihos': shikihos, 'performance_latest': performance_latest })
 
 
 # functions
