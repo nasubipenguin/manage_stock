@@ -24,10 +24,12 @@ def stock_list(request):
     considering = []
     unwatching = []
     for stock in stocks:
+        latest_notes_id = ''
         latest_notes = ''
         latest_notes_date = ''
         note = Note.objects.filter(stock_code=stock.stock_code).order_by('-publish_date').first()
         if( note != None ):
+            latest_notes_id = note.id
             latest_notes = ''
             stock_price = ''
             latest_notes_date = note.publish_date
@@ -36,7 +38,7 @@ def stock_list(request):
             if (note.stock_price != None):
                 stock_price = note.stock_price
 
-        new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes_id':note.id, 'latest_notes':latest_notes, 'stock_price':stock_price, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
+        new_stock = {'stock_code':stock.stock_code, 'stock_name':stock.stock_name, 'accounting_month':stock.accounting_month, 'latest_notes_id':latest_notes_id, 'latest_notes':latest_notes, 'stock_price':stock_price, 'latest_notes_date':latest_notes_date, 'watch_flag':stock.watch_flag}
 
         if( stock.watch_flag == 1):
             watching.append(new_stock)
