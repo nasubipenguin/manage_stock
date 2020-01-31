@@ -361,12 +361,18 @@ def calc_and_set_performance(performances):
         # Select max (pub_year+pub_month) by target_period
         if ( performance.target_period != previous_period ):
             # Set YoY
-            if(pre_sales_amount != -1 and performance.sales_amount > 0 and pre_sales_amount > 0 ):
-                performance.sales_amount_yoy = (performance.sales_amount  -  pre_sales_amount) / pre_sales_amount
-            if (pre_ordinary_income != -1 and performance.ordinary_income > 0 and pre_ordinary_income > 0 ):
-                performance.ordinary_income_yoy = (performance.ordinary_income - pre_ordinary_income) / pre_ordinary_income
+            if(pre_sales_amount != -1):
+                performance.sales_amount_yoy = '-'
+                if (performance.sales_amount > 0 and pre_sales_amount > 0):
+                    performance.sales_amount_yoy = (performance.sales_amount  -  pre_sales_amount) / pre_sales_amount
+            if (pre_ordinary_income != -1):
+                performance.ordinary_income_yoy = '-'
+                if (performance.ordinary_income > 0 and pre_ordinary_income > 0):
+                    performance.ordinary_income_yoy = (performance.ordinary_income - pre_ordinary_income) / pre_ordinary_income
             if (pre_net_income != -1 and performance.net_income > 0 and pre_net_income > 0 ):
-                performance.net_income_yoy = (performance.net_income - pre_net_income) / pre_net_income
+                performance.net_income_yoy = '-'
+                if (performance.net_income > 0 and pre_net_income > 0):
+                    performance.net_income_yoy = (performance.net_income - pre_net_income) / pre_net_income
             performance.save()
             result.append(performance)
 
