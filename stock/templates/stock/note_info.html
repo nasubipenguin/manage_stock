@@ -133,10 +133,10 @@
           {% if note.buy_amount is None %}
           -
           {% else %}
-            {% if note.buy_price != 0 and note.buy_amount != 0  %}
+            {% if note.buy_price is not None and note.buy_amount is not None  %}
             {{ note.buy_price|mul:note.buy_amount|intcomma }}円
             {% endif %}
-            {% if loss_cut_range != 0 and note.buy_amount != 0  %}
+            {% if loss_cut_range is not None and note.buy_amount is not None  %}
             （損失予定額：{{ loss_cut_range|mul:note.buy_amount|intcomma }}円）
             {% endif %}
           {% endif %}
