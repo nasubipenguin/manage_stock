@@ -353,26 +353,21 @@ def stock_detail(request, stock_code):
 def calc_and_set_performance(performances):
     result = []
     previous_period = -1
-    pre_sales_amount = -1;
-    pre_ordinary_income = -1;
-    pre_net_income = -1;
 
+    is_first = True
     for performance in performances:
         # Select max (pub_year+pub_month) by target_period
         if ( performance.target_period != previous_period ):
             # Set YoY
-            if(pre_sales_amount != -1):
-                performance.sales_amount_yoy = '-'
-                if (performance.sales_amount > 0 and pre_sales_amount > 0):
-                    performance.sales_amount_yoy = (performance.sales_amount  -  pre_sales_amount) / pre_sales_amount
-            if (pre_ordinary_income != -1):
-                performance.ordinary_income_yoy = '-'
-                if (performance.ordinary_income > 0 and pre_ordinary_income > 0):
-                    performance.ordinary_income_yoy = (performance.ordinary_income - pre_ordinary_income) / pre_ordinary_income
-            if (pre_net_income != -1 and performance.net_income > 0 and pre_net_income > 0 ):
-                performance.net_income_yoy = '-'
-                if (performance.net_income > 0 and pre_net_income > 0):
-                    performance.net_income_yoy = (performance.net_income - pre_net_income) / pre_net_income
+            if(is_first == True):
+                performance.sales_amount_yoy = -1
+                performance.ordinary_income_yoy = -1
+                performance.net_income_yoy = -1
+                is_first = False
+            else:
+                performance.sales_amount_yoy = (performance.sales_amount  -  pre_sales_amount) / pre_sales_amount
+                performance.ordinary_income_yoy = (performance.ordinary_income - pre_ordinary_income) / pre_ordinary_income
+                performance.net_income_yoy = (performance.net_income - pre_net_income) / pre_net_income
             performance.save()
             result.append(performance)
 
