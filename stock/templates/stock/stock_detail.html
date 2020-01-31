@@ -41,13 +41,13 @@
             <th scope="col" rowspan="2">年度</th>
             <th scope="col" rowspan="2">ソース</th>
             <th scope="col" rowspan="2">発行年月</th>
-            <th scope="col" rowspan="2">売上高</th>
-            <th scope="col" rowspan="2">経常利益</th>
-            <th scope="col" rowspan="2">純利益</th>
-            <th scope="col" colspan="3">前年度増減率：5%以上</th>
-            <th scope="col" rowspan="2">売上高経常利益率<br>直近3年で10%以上</th>
-            <th scope="col" rowspan="2">経常利益純利益率<br>60-70%</th>
-            <th scope="col" rowspan="2">予想PER<br>30以下</th>
+            <th scope="col" rowspan="2">売上高<br>(百万円)</th>
+            <th scope="col" rowspan="2">経常利益<br>(百万円)</th>
+            <th scope="col" rowspan="2">純利益<br>(百万円)</th>
+            <th scope="col" colspan="3">前年度増減率(%) <span class="small">(5%以上)</span></th>
+            <th scope="col" rowspan="2">売上高<br>経常利益率<br>(%)<br><span class="small">(直近3年10%以上)</span></th>
+            <th scope="col" rowspan="2">経常利益<br>純利益率<br>(%)<br><span class="small">(60-70%)</span></th>
+            <th scope="col" rowspan="2">予想PER<br><span class="small">(30以下)</span></th>
             <th scope="col" rowspan="2">備考</th>
           </tr>
           <tr>
@@ -83,19 +83,19 @@
             <td>
               {% if forloop.counter0 == 0 %}-
               {% else %}
-                <span{% if performance.sales_amount_yoy < 0.05 and loop.counter0 != 0 %} class="text-danger"{% endif %}> {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}%</span>
+                <span{% if performance.sales_amount_yoy < 0.05 and loop.counter0 != 0 %} class="text-danger"{% endif %}> {{ performance.sales_amount_yoy|mul:100|floatformat:"-2" }}</span>
               {% endif %}
             </td>
             <td>
               {% if forloop.counter0 == 0 %}-
               {% else %}
-                <span{% if performance.ordinary_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}%</span>
+                <span{% if performance.ordinary_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.ordinary_income_yoy|mul:100|floatformat:"-2" }}</span>
               {% endif %}
             </td>
             <td>
               {% if forloop.counter0 == 0 %}-
               {% else %}
-                <span{% if performance.net_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.net_income_yoy|mul:100|floatformat:"-2" }}%</span>
+                <span{% if performance.net_income_yoy < 0.05 %} class="text-danger"{% endif %}>{{ performance.net_income_yoy|mul:100|floatformat:"-2" }}</span>
               {% endif %}
             </td>
             {% with rate1=performance.ordinary_income|div:performance.sales_amount %}
@@ -103,7 +103,7 @@
               {% if performance.ordinary_income == 0 or performance.sales_amount == 0 %}
                 -
               {% else %}
-               <span{% if rate1 < 0.1 %} class="text-danger"{% endif %}>{{ rate1|mul:100|floatformat:"-2" }}%</span>
+               <span{% if rate1 < 0.1 %} class="text-danger"{% endif %}>{{ rate1|mul:100|floatformat:"-2" }}</span>
               {% endif %}
             </td>
             {% endwith %}
@@ -112,7 +112,7 @@
               {% if performance.net_income == 0 or performance.ordinary_income == 0 %}
                 -
               {% else %}
-                <span{% if rate2 < 0.6 or rate2 > 0.7 %} class="text-danger"{% endif %}>{{ rate2|mul:100|floatformat:"-2" }}%</span>
+                <span{% if rate2 < 0.6 or rate2 > 0.7 %} class="text-danger"{% endif %}>{{ rate2|mul:100|floatformat:"-2" }}</span>
               {% endif %}
             </td>
             {% endwith %}

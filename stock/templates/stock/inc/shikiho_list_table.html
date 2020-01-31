@@ -6,14 +6,14 @@
         <thead class="small text-center">
           <tr>
             <th scope="col" rowspan="2">発行年月</th>
-            <th scope="col">自己資本比率<br>40%以上</th>
-            <th scope="col">ROE<br>10%以上</th>
-            <th scope="col">ROA<br>5%以上</th>
-            <th scope="col">営業CF<br>+</th>
-            <th scope="col">投資CF<br>-</th>
-            <th scope="col">財務CF<br>-</th>
-            <th scope="col">時価総額（億）<br>500未満</th>
-            <th scope="col">株主価値（億）</th>
+            <th scope="col">自己資本比率<br><span class="small">(40%以上)</span></th>
+            <th scope="col">ROE<br><span class="small">(10%以上)</span></th>
+            <th scope="col">ROA<br><span class="small">(5%以上)</span></th>
+            <th scope="col">営業CF<br><span class="small">(+)</span></th>
+            <th scope="col">投資CF<br><span class="small">(-)</span></th>
+            <th scope="col">財務CF<br><span class="small">(-)</span></th>
+            <th scope="col">時価総額（億円）<br><span class="small">(500未満)</span></th>
+            <th scope="col">株主価値（億円）</th>
           </tr>
           <tr>
             <th scope="col" colspan="2">見出し1</th>
@@ -44,7 +44,7 @@
               <span{% if shikiho.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.financing_cf|yesno:"+,-," }}</span>
             </td>
             <td class="text-right">
-              <span{% if shikiho.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho.market_capitalization|intcomma }}億円</span>
+              <span{% if shikiho.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho.market_capitalization|intcomma }}</span>
             </td>
             <td class="text-right"></td>
           </tr>
