@@ -76,7 +76,7 @@
           {% endif %}
         </div>
       </div>
-      {% with profit_range=note.profit_price|sub:note.buy_price loss_cut_range=note.buy_price|sub:note.loss_cut_price %}
+      {% with profit_range=note.profit_price|sub:note.buy_price|default:0 loss_cut_range=note.buy_price|sub:note.loss_cut_price|default:0 %}
       <div class="form-group row">
         <label for="buy_price" class="justify-content-start col-sm-3 col-lg-2">購入単価</label>
         <div class="col-sm-9 col-lg-10">
@@ -136,7 +136,7 @@
             {% if note.buy_price is not None and note.buy_amount is not None  %}
             {{ note.buy_price|mul:note.buy_amount|intcomma }}円
             {% endif %}
-            {% if loss_cut_range is not None and note.buy_amount is not None  %}
+            {% if buy_price is not None and note.loss_cut_price is not None and note.buy_amount is not None %}
             （損失予定額：{{ loss_cut_range|mul:note.buy_amount|intcomma }}円）
             {% endif %}
           {% endif %}
