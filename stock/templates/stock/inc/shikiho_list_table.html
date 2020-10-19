@@ -35,13 +35,13 @@
               <span{% if shikiho.roa < 5 %} class="text-danger"{% endif %}>{{ shikiho.roa }}%</span>
             </td>
             <td class="text-center">
-              <span{% if shikiho.operating_cf == False %} class="text-danger"{% endif %}>{{ shikiho.operating_cf|yesno:"+,-," }}</span>
+              <span{% if shikiho.operating_cf < 0 %} class="text-danger"{% endif %}>{{ shikiho.operating_cf }}</span>
             </td>
             <td class="text-center">
-              <span{% if shikiho.investing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.investing_cf|yesno:"+,-," }}</span>
+                <span{% if shikiho.investing_cf > 0 %} class="text-danger"{% endif %}>{{ shikiho.investing_cf }}</span>
             </td>
             <td class="text-center">
-              <span{% if shikiho.financing_cf == True %} class="text-danger"{% endif %}>{{ shikiho.financing_cf|yesno:"+,-," }}</span>
+                <span{% if shikiho.financing_cf > 0 %} class="text-danger"{% endif %}>{{ shikiho.financing_cf }}</span>
             </td>
             <td class="text-right">
               <span{% if shikiho.market_capitalization > 500  %} class="text-danger"{% endif %}>{{ shikiho.market_capitalization|intcomma }}</span>

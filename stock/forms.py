@@ -43,18 +43,6 @@ class PerformanceForm(forms.ModelForm):
         fields = ('stock_code', 'source','pub_year','pub_month','target_period','is_established','sales_amount', 'operating_income', 'ordinary_income', 'net_income', 'per', 'notes', 'updated_date')
 
 class ShikihoForm(forms.ModelForm):
-    operating_cf = forms.fields.ChoiceField(
-        choices=PLUS_MINUS_CHOICES,
-        widget=forms.widgets.Select,
-    )
-    investing_cf = forms.fields.ChoiceField(
-        choices=PLUS_MINUS_CHOICES,
-        widget=forms.widgets.Select,
-    )
-    financing_cf = forms.fields.ChoiceField(
-        choices=PLUS_MINUS_CHOICES,
-        widget=forms.widgets.Select,
-    )
     class Meta:
         model = Shikiho
         fields = ('stock_code', 'pub_year','pub_month','market_capitalization','capital_ratio','roe','roa', 'operating_cf', 'investing_cf', 'financing_cf', 'headline_1', 'headline_2', 'notes', 'updated_date')
